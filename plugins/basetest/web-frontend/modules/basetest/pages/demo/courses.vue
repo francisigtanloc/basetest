@@ -85,20 +85,147 @@
                   </svg>
                   Edit
                 </button>
-                <button @click="confirmDelete(course)" class="action-btn btn-delete">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                  </svg>
-                  Delete
-                </button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Edit Course Modal -->
+    <div v-if="editingCourse" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <!-- Overlay -->
+      <div 
+        class="absolute inset-0 bg-black bg-opacity-50"
+        @click="cancelEdit"
+      ></div>
+      
+      <!-- Modal Container -->
+      <div class="relative w-full max-w-md">
+        <!-- Modal Content -->
+        <div class="bg-white rounded-lg shadow-xl">
+          <!-- Modal Header -->
+          <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-medium text-gray-900">
+                Edit Course
+              </h3>
+              <button
+                type="button"
+                @click="cancelEdit"
+                class="text-gray-400 hover:text-gray-500"
+              >
+                <span class="sr-only">Close</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Modal Body -->
+          <div class="p-6">
+            <div class="space-y-4">
+              <!-- Course Name -->
+              <div>
+                <label for="editCourseName" class="block text-sm font-medium text-gray-700">
+                  Course Name <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="editCourseName"
+                  v-model="editingCourse.Name"
+                  :class="{
+                    'border-red-300': editFormErrors.name,
+                    'border-gray-300': !editFormErrors.name
+                  }"
+                  class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 border focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  placeholder="Enter course name"
+                />
+                <p v-if="editFormErrors.name" class="mt-1 text-sm text-red-600">
+                  {{ editFormErrors.name }}
+                </p>
+              </div>
+
+              <!-- Description -->
+              <div>
+                <label for="editCourseDescription" class="block text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <textarea
+                  id="editCourseDescription"
+                  v-model="editingCourse.Description"
+                  rows="3"
+                  class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  placeholder="Enter course description"
+                ></textarea>
+              </div>
+
+              <!-- Start Date -->
+              <div>
+                <label for="editStartDate" class="block text-sm font-medium text-gray-700">
+                  Start Date <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="date"
+                  id="editStartDate"
+                  v-model="editingCourse['Start Date']"
+                  :class="{
+                    'border-red-300': editFormErrors.startDate,
+                    'border-gray-300': !editFormErrors.startDate
+                  }"
+                  class="mt-1 block w-full rounded-md border shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+                <p v-if="editFormErrors.startDate" class="mt-1 text-sm text-red-600">
+                  {{ editFormErrors.startDate }}
+                </p>
+              </div>
+
+              <!-- Active Status -->
+              <div class="flex items-center">
+                <input
+                  id="editIsActive"
+                  type="checkbox"
+                  v-model="editingCourse.Active"
+                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label for="editIsActive" class="ml-2 block text-sm text-gray-700">
+                  Active
+                </label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Modal Footer -->
+          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg flex justify-end space-x-3">
+            <button
+              type="button"
+              @click="cancelEdit"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              :disabled="isUpdating"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              @click="updateCourse"
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              :disabled="isUpdating"
+            >
+              <svg v-if="isUpdating" class="w-4 h-4 mr-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span v-else class="flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Update Course
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Create Course Modal -->
@@ -237,57 +364,6 @@
       </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
-    <div v-if="showDeleteModal" class="fixed inset-0 z-50 overflow-y-auto">
-      <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-          <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-
-        <!-- Modal content -->
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div class="sm:flex sm:items-start">
-              <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </div>
-              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                  Delete Course
-                </h3>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    Are you sure you want to delete "{{ selectedCourse?.Name || 'this course' }}"? This action cannot be undone.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button
-              type="button"
-              @click="deleteCourse"
-              class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-              :disabled="loading"
-            >
-              <span v-if="!loading">Delete</span>
-              <span v-else>Deleting...</span>
-            </button>
-            <button
-              type="button"
-              @click="closeModal"
-              class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-              :disabled="loading"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -300,8 +376,11 @@ export default {
       courses: [],
       loading: false,
       error: null,
-      selectedCourse: null,
-      showDeleteModal: false,
+      // Edit modal state
+      editingCourse: null,
+      isUpdating: false,
+      editFormErrors: {},
+      // Create modal state
       showCreateModal: false,
       isCreating: false,
       newCourse: {
@@ -359,37 +438,116 @@ export default {
     },
 
     editCourse(course) {
-      // Store the selected course and open edit modal
-      this.selectedCourse = { ...course }
-      // In a real app, you would open an edit modal here
-      console.log('Edit course:', course.id)
-      // Example: this.$router.push(`/courses/${course.id}/edit`)
+      // Create a deep copy of the course to edit
+      this.editingCourse = JSON.parse(JSON.stringify(course))
+      this.editFormErrors = {}
     },
 
-    confirmDelete(course) {
-      this.selectedCourse = course
-      this.showDeleteModal = true
+    cancelEdit() {
+      this.editingCourse = null
+      this.editFormErrors = {}
     },
 
-    async deleteCourse() {
-      if (!this.selectedCourse) return
+    validateEditForm() {
+      this.editFormErrors = {}
+      let isValid = true
+
+      if (!this.editingCourse.Name?.trim()) {
+        this.editFormErrors.name = 'Course name is required'
+        isValid = false
+      }
+
+      if (!this.editingCourse['Start Date']) {
+        this.editFormErrors.startDate = 'Start date is required'
+        isValid = false
+      }
+
+      return isValid
+    },
+
+    async updateCourse() {
+      if (!this.validateEditForm()) {
+        return
+      }
+
+      this.isUpdating = true
+      this.error = null
       
       try {
-        await this.$client.delete(`basetest/courses/${this.selectedCourse.id}/`)
-        // Remove the deleted course from the list
-        this.courses = this.courses.filter(c => c.id !== this.selectedCourse.id)
-        this.showDeleteModal = false
-        this.selectedCourse = null
+        // Format the data as a JSON string for the API
+        const courseData = JSON.stringify({
+          Name: this.editingCourse.Name,
+          Description: this.editingCourse.Description,
+          'Start Date': this.editingCourse['Start Date'],
+          Active: this.editingCourse.Active
+        })
+        
+        const response = await this.$client.put(`basetest/courses/${this.editingCourse.id}/`, courseData)
+        console.log('API Response (update):', response);
+        
+        // Safely extract the course data from the response
+        try {
+          // Try to find the course data in the response
+          let updatedCourse;
+          
+          if (response && response.data) {
+            // Check for course directly in response
+            if (response.data.course) {
+              updatedCourse = response.data.course;
+            }
+            // Check for nested data structure
+            else if (response.data.data && response.data.data.course) {
+              updatedCourse = response.data.data.course;
+            }
+            
+            // If we found a course, update it in the list
+            if (updatedCourse) {
+              const index = this.courses.findIndex(c => c.id === this.editingCourse.id)
+              if (index !== -1) {
+                this.courses.splice(index, 1, updatedCourse)
+              }
+            } else {
+              console.warn('Could not find course data in response');
+            }
+          }
+        } catch (parseError) {
+          console.error('Error processing response:', parseError);
+        }
+        
+        // Reset error state since operation was successful
+        this.error = null
+        
+        // Close the modal
+        this.editingCourse = null
+        
+        // Show success message
+        // this.$toast.success('Course updated successfully!')
       } catch (error) {
-        console.error('Failed to delete course:', error)
-        this.error = 'Failed to delete course. Please try again.'
+        console.error('Error updating course:', error)
+        // Handle error response
+        if (error.response?.data?.data?.message) {
+          this.error = error.response.data.data.message
+        } else if (error.response?.data?.message) {
+          this.error = error.response.data.message
+        } else if (error.response?.data?.detail) {
+          this.error = error.response.data.detail
+        } else {
+          this.error = 'Failed to update course'
+        }
+        
+        // Handle validation errors
+        if (error.response?.data?.data?.errors) {
+          this.editFormErrors = error.response.data.data.errors
+        } else if (error.response?.data?.errors) {
+          this.editFormErrors = error.response.data.errors
+        } else if (error.response?.status === 400) {
+          this.editFormErrors = error.response.data
+        }
+      } finally {
+        this.isUpdating = false
       }
     },
 
-    closeModal() {
-      this.showDeleteModal = false
-      this.selectedCourse = null
-    },
     
     openCreateModal() {
       this.showCreateModal = true
@@ -437,32 +595,70 @@ export default {
       
       try {
         // Format the data to match the API expected format
+        // Format the data for the API
         const courseData = {
-          data: {
-            Name: this.newCourse.Name,
-            Description: this.newCourse.Description,
-            'Start Date': this.newCourse['Start Date'],
-            Active: this.newCourse.Active
-          }
+          Name: this.newCourse.Name,
+          Description: this.newCourse.Description,
+          'Start Date': this.newCourse['Start Date'],
+          Active: this.newCourse.Active
         }
         
         const response = await this.$client.post('basetest/courses/', courseData)
+        console.log('API Response:', response);
         
-        // Add the new course to the beginning of the list
-        this.courses.unshift(response.data)
+        // Safely extract the course data from the response
+        try {
+          // Try to find the course data in the response
+          let newCourse;
+          
+          if (response && response.data) {
+            // Check for course directly in response
+            if (response.data.course) {
+              newCourse = response.data.course;
+            }
+            // Check for nested data structure
+            else if (response.data.data && response.data.data.course) {
+              newCourse = response.data.data.course;
+            }
+            // If we found a course, add it to the list
+            if (newCourse) {
+              this.courses.unshift(newCourse);
+            } else {
+              console.warn('Could not find course data in response');
+            }
+          }
+        } catch (parseError) {
+          console.error('Error processing response:', parseError);
+        }
+        
+        // Reset error state since operation was successful
+        this.error = null
         
         // Close the modal and reset the form
         this.closeCreateModal()
         
-        // Show success message (you might want to add a toast notification)
-        this.$toast.success('Course created successfully')
+        // Show success message
+        // this.$toast.success('Course created successfully!')
         
       } catch (error) {
         console.error('Failed to create course:', error)
-        this.error = error.response?.data?.detail || 'Failed to create course. Please try again.'
+        // Handle error response
+        if (error.response?.data?.data?.message) {
+          this.error = error.response.data.data.message
+        } else if (error.response?.data?.message) {
+          this.error = error.response.data.message
+        } else if (error.response?.data?.detail) {
+          this.error = error.response.data.detail
+        } else {
+          this.error = 'Failed to create course'
+        }
         
-        // Handle validation errors from the API
-        if (error.response?.data) {
+        // Handle validation errors
+        if (error.response?.data?.data?.errors) {
+          this.formErrors = { ...this.formErrors, ...error.response.data.data.errors }
+        } else if (error.response?.data?.errors) {
+          this.formErrors = { ...this.formErrors, ...error.response.data.errors }
+        } else if (error.response?.data) {
           this.formErrors = { ...this.formErrors, ...error.response.data }
         }
       } finally {
