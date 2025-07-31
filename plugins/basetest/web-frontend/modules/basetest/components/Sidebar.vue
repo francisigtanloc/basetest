@@ -3,7 +3,7 @@
       <nav class="sidebar-nav">
         <NuxtLink to="/demo/index" exact class="nav-link">Dashboard</NuxtLink>
         <NuxtLink to="/demo/users" class="nav-link">Users</NuxtLink>
-        <NuxtLink to="/settings" class="nav-link">Settings</NuxtLink>
+        <NuxtLink to="/demo/courses" class="nav-link">Courses</NuxtLink>
         <a href="#" class="nav-link">Logout</a>
       </nav>
       <div class="sidebar-footer">
