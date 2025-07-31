@@ -21,7 +21,7 @@ services:
     environment:
       BASEROW_PUBLIC_URL: http://localhost
     volumes:
-      - baserow_data:/baserow/data
+      - basetest_baserow_data:/baserow/data
       - ./plugins/basetest/backend:/baserow/data/plugins/basetest/backend
       # Override the for node_modules, so we use the node_modules built
       # directly into the image instead of whatever is on your local filesystem.
@@ -31,4 +31,4 @@ services:
     stdin_open: true
     tty: true
 volumes:
-  baserow_data:
+  basetest_baserow_data:
