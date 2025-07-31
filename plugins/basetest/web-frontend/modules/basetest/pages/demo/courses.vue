@@ -96,24 +96,27 @@
     <div v-if="editingCourse" class="fixed inset-0 z-50 flex items-center justify-center p-4">
       <!-- Overlay -->
       <div 
-        class="absolute inset-0 bg-black bg-opacity-50"
+        class="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300"
         @click="cancelEdit"
       ></div>
       
       <!-- Modal Container -->
-      <div class="relative w-full max-w-md">
+      <div class="relative w-full max-w-lg transform transition-all duration-300 ease-in-out">
         <!-- Modal Content -->
-        <div class="bg-white rounded-lg shadow-xl">
+        <div class="bg-white rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 overflow-hidden">
           <!-- Modal Header -->
-          <div class="px-6 py-4 border-b border-gray-200">
+          <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
             <div class="flex items-center justify-between">
-              <h3 class="text-lg font-medium text-gray-900">
+              <h3 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
                 Edit Course
               </h3>
               <button
                 type="button"
                 @click="cancelEdit"
-                class="text-gray-400 hover:text-gray-500"
+                class="rounded-full p-1 text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               >
                 <span class="sr-only">Close</span>
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -125,71 +128,105 @@
           
           <!-- Modal Body -->
           <div class="p-6">
-            <div class="space-y-4">
+            <div class="space-y-6">
               <!-- Course Name -->
               <div>
-                <label for="editCourseName" class="block text-sm font-medium text-gray-700">
-                  Course Name <span class="text-red-500">*</span>
+                <label for="editCourseName" class="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Course Name <span class="text-red-500 ml-1">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="editCourseName"
-                  v-model="editingCourse.Name"
-                  :class="{
-                    'border-red-300': editFormErrors.name,
-                    'border-gray-300': !editFormErrors.name
-                  }"
-                  class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 border focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Enter course name"
-                />
-                <p v-if="editFormErrors.name" class="mt-1 text-sm text-red-600">
+                <div class="relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="editCourseName"
+                    v-model="editingCourse.Name"
+                    :class="{
+                      'border-red-300 ring-red-500 pr-10': editFormErrors.name,
+                      'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !editFormErrors.name
+                    }"
+                    class="block w-full pl-10 pr-3 py-2.5 border rounded-lg shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-colors duration-200 sm:text-sm"
+                    placeholder="Enter course name"
+                  />
+                  <div v-if="editFormErrors.name" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+                <p v-if="editFormErrors.name" class="mt-2 text-sm text-red-600">
                   {{ editFormErrors.name }}
                 </p>
               </div>
 
               <!-- Description -->
               <div>
-                <label for="editCourseDescription" class="block text-sm font-medium text-gray-700">
+                <label for="editCourseDescription" class="block text-sm font-medium text-gray-700 mb-1">
                   Description
                 </label>
-                <textarea
-                  id="editCourseDescription"
-                  v-model="editingCourse.Description"
-                  rows="3"
-                  class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Enter course description"
-                ></textarea>
+                <div class="relative rounded-md shadow-sm">
+                  <div class="absolute top-3 left-3 flex items-start pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                  </div>
+                  <textarea
+                    id="editCourseDescription"
+                    v-model="editingCourse.Description"
+                    rows="3"
+                    class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-colors duration-200 sm:text-sm"
+                    placeholder="Enter course description"
+                  ></textarea>
+                </div>
               </div>
 
               <!-- Start Date -->
               <div>
-                <label for="editStartDate" class="block text-sm font-medium text-gray-700">
-                  Start Date <span class="text-red-500">*</span>
+                <label for="editStartDate" class="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Start Date <span class="text-red-500 ml-1">*</span>
                 </label>
-                <input
-                  type="date"
-                  id="editStartDate"
-                  v-model="editingCourse['Start Date']"
-                  :class="{
-                    'border-red-300': editFormErrors.startDate,
-                    'border-gray-300': !editFormErrors.startDate
-                  }"
-                  class="mt-1 block w-full rounded-md border shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-                <p v-if="editFormErrors.startDate" class="mt-1 text-sm text-red-600">
+                <div class="relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="date"
+                    id="editStartDate"
+                    v-model="editingCourse['Start Date']"
+                    :class="{
+                      'border-red-300 ring-red-500 pr-10': editFormErrors.startDate,
+                      'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !editFormErrors.startDate
+                    }"
+                    class="block w-full pl-10 pr-3 py-2.5 border rounded-lg shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-colors duration-200 sm:text-sm"
+                  />
+                  <div v-if="editFormErrors.startDate" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+                <p v-if="editFormErrors.startDate" class="mt-2 text-sm text-red-600">
                   {{ editFormErrors.startDate }}
                 </p>
               </div>
 
               <!-- Active Status -->
-              <div class="flex items-center">
-                <input
-                  id="editIsActive"
-                  type="checkbox"
-                  v-model="editingCourse.Active"
-                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label for="editIsActive" class="ml-2 block text-sm text-gray-700">
+              <div class="flex items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <div class="relative inline-block w-10 mr-2 align-middle">
+                  <input 
+                    id="editIsActive" 
+                    type="checkbox"
+                    v-model="editingCourse.Active"
+                    class="sr-only peer" 
+                  />
+                  <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                </div>
+                <label for="editIsActive" class="ml-2 text-sm font-medium text-gray-700 select-none">
                   Active
                 </label>
               </div>
@@ -197,27 +234,30 @@
           </div>
           
           <!-- Modal Footer -->
-          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg flex justify-end space-x-3">
+          <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-t border-gray-200 rounded-b-lg flex justify-end space-x-4">
             <button
               type="button"
               @click="cancelEdit"
-              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out flex items-center"
               :disabled="isUpdating"
             >
+              <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
               Cancel
             </button>
             <button
               type="button"
               @click="updateCourse"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              class="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 border border-transparent rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200 ease-in-out flex items-center"
               :disabled="isUpdating"
             >
-              <svg v-if="isUpdating" class="w-4 h-4 mr-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg v-if="isUpdating" class="w-5 h-5 mr-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
               <span v-else class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
                 Update Course
@@ -232,24 +272,27 @@
     <div v-if="showCreateModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
       <!-- Overlay -->
       <div 
-        class="absolute inset-0 bg-black bg-opacity-50"
+        class="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300"
         @click="closeCreateModal"
       ></div>
       
       <!-- Modal Container -->
-      <div class="relative w-full max-w-md">
+      <div class="relative w-full max-w-lg transform transition-all duration-300 ease-in-out">
         <!-- Modal Content -->
-        <div class="bg-white rounded-lg shadow-xl">
+        <div class="bg-white rounded-xl shadow-2xl ring-1 ring-black ring-opacity-5 overflow-hidden">
           <!-- Modal Header -->
-          <div class="px-6 py-4 border-b border-gray-200">
+          <div class="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200">
             <div class="flex items-center justify-between">
-              <h3 class="text-lg font-medium text-gray-900">
+              <h3 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
                 Create New Course
               </h3>
               <button
                 type="button"
                 @click="closeCreateModal"
-                class="text-gray-400 hover:text-gray-500"
+                class="rounded-full p-1 text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
               >
                 <span class="sr-only">Close</span>
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -261,71 +304,105 @@
           
           <!-- Modal Body -->
           <div class="p-6">
-            <div class="space-y-4">
+            <div class="space-y-6">
               <!-- Course Name -->
               <div>
-                <label for="courseName" class="block text-sm font-medium text-gray-700">
-                  Course Name <span class="text-red-500">*</span>
+                <label for="courseName" class="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Course Name <span class="text-red-500 ml-1">*</span>
                 </label>
-                <input
-                  type="text"
-                  id="courseName"
-                  v-model="newCourse.Name"
-                  :class="{
-                    'border-red-300': formErrors.name,
-                    'border-gray-300': !formErrors.name
-                  }"
-                  class="mt-1 block w-full rounded-md shadow-sm py-2 px-3 border focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Enter course name"
-                />
-                <p v-if="formErrors.name" class="mt-1 text-sm text-red-600">
+                <div class="relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="courseName"
+                    v-model="newCourse.Name"
+                    :class="{
+                      'border-red-300 ring-red-500 pr-10': formErrors.name,
+                      'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !formErrors.name
+                    }"
+                    class="block w-full pl-10 pr-3 py-2.5 border rounded-lg shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-colors duration-200 sm:text-sm"
+                    placeholder="Enter course name"
+                  />
+                  <div v-if="formErrors.name" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+                <p v-if="formErrors.name" class="mt-2 text-sm text-red-600">
                   {{ formErrors.name }}
                 </p>
               </div>
 
               <!-- Description -->
               <div>
-                <label for="courseDescription" class="block text-sm font-medium text-gray-700">
+                <label for="courseDescription" class="block text-sm font-medium text-gray-700 mb-1">
                   Description
                 </label>
-                <textarea
-                  id="courseDescription"
-                  v-model="newCourse.Description"
-                  rows="3"
-                  class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Enter course description"
-                ></textarea>
+                <div class="relative rounded-md shadow-sm">
+                  <div class="absolute top-3 left-3 flex items-start pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                  </div>
+                  <textarea
+                    id="courseDescription"
+                    v-model="newCourse.Description"
+                    rows="3"
+                    class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-opacity-50 transition-colors duration-200 sm:text-sm"
+                    placeholder="Enter course description"
+                  ></textarea>
+                </div>
               </div>
 
               <!-- Start Date -->
               <div>
-                <label for="startDate" class="block text-sm font-medium text-gray-700">
-                  Start Date <span class="text-red-500">*</span>
+                <label for="startDate" class="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Start Date <span class="text-red-500 ml-1">*</span>
                 </label>
-                <input
-                  type="date"
-                  id="startDate"
-                  v-model="newCourse['Start Date']"
-                  :class="{
-                    'border-red-300': formErrors.startDate,
-                    'border-gray-300': !formErrors.startDate
-                  }"
-                  class="mt-1 block w-full rounded-md border shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-                <p v-if="formErrors.startDate" class="mt-1 text-sm text-red-600">
+                <div class="relative rounded-md shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="date"
+                    id="startDate"
+                    v-model="newCourse['Start Date']"
+                    :class="{
+                      'border-red-300 ring-red-500 pr-10': formErrors.startDate,
+                      'border-gray-300 focus:border-blue-500 focus:ring-blue-500': !formErrors.startDate
+                    }"
+                    class="block w-full pl-10 pr-3 py-2.5 border rounded-lg shadow-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-colors duration-200 sm:text-sm"
+                  />
+                  <div v-if="formErrors.startDate" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+                <p v-if="formErrors.startDate" class="mt-2 text-sm text-red-600">
                   {{ formErrors.startDate }}
                 </p>
               </div>
 
               <!-- Active Status -->
-              <div class="flex items-center">
-                <input
-                  id="isActive"
-                  type="checkbox"
-                  v-model="newCourse.Active"
-                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label for="isActive" class="ml-2 block text-sm text-gray-700">
+              <div class="flex items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+                <div class="relative inline-block w-10 mr-2 align-middle">
+                  <input 
+                    id="isActive" 
+                    type="checkbox"
+                    v-model="newCourse.Active"
+                    class="sr-only peer" 
+                  />
+                  <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                </div>
+                <label for="isActive" class="ml-2 text-sm font-medium text-gray-700 select-none">
                   Active
                 </label>
               </div>
@@ -333,27 +410,30 @@
           </div>
           
           <!-- Modal Footer -->
-          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg flex justify-end space-x-3">
+          <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-t border-gray-200 rounded-b-lg flex justify-end space-x-4">
             <button
               type="button"
               @click="closeCreateModal"
-              class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out flex items-center"
               :disabled="isCreating"
             >
+              <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
               Cancel
             </button>
             <button
               type="button"
               @click="createCourse"
-              class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              class="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 border border-transparent rounded-lg shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition-all duration-200 ease-in-out flex items-center"
               :disabled="isCreating"
             >
-              <svg v-if="isCreating" class="w-4 h-4 mr-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg v-if="isCreating" class="w-5 h-5 mr-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
               <span v-else class="flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
                 Create Course
@@ -474,54 +554,36 @@ export default {
       this.error = null
       
       try {
-        // Format the data as a JSON string for the API
-        const courseData = JSON.stringify({
+        const courseData = {
           Name: this.editingCourse.Name,
           Description: this.editingCourse.Description,
           'Start Date': this.editingCourse['Start Date'],
           Active: this.editingCourse.Active
-        })
-        
-        const response = await this.$client.put(`basetest/courses/${this.editingCourse.id}/`, courseData)
-        console.log('API Response (update):', response);
-        
-        // Safely extract the course data from the response
-        try {
-          // Try to find the course data in the response
-          let updatedCourse;
-          
-          if (response && response.data) {
-            // Check for course directly in response
-            if (response.data.course) {
-              updatedCourse = response.data.course;
-            }
-            // Check for nested data structure
-            else if (response.data.data && response.data.data.course) {
-              updatedCourse = response.data.data.course;
-            }
-            
-            // If we found a course, update it in the list
-            if (updatedCourse) {
-              const index = this.courses.findIndex(c => c.id === this.editingCourse.id)
-              if (index !== -1) {
-                this.courses.splice(index, 1, updatedCourse)
-              }
-            } else {
-              console.warn('Could not find course data in response');
-            }
-          }
-        } catch (parseError) {
-          console.error('Error processing response:', parseError);
         }
         
-        // Reset error state since operation was successful
-        this.error = null
+        const response = await this.$client.put(`basetest/courses/${this.editingCourse.id}/`, courseData)
+        console.log('API Response (update):', response)
         
-        // Close the modal
+        let updatedCourse = null
+        if (response && response.data) {
+          if (response.data.data && response.data.data.course) {
+            updatedCourse = response.data.data.course
+          } else if (response.data.course) {
+            updatedCourse = response.data.course
+          } else {
+            updatedCourse = response.data
+          }
+        }
+        
+        if (updatedCourse && typeof updatedCourse === 'object') {
+          const index = this.courses.findIndex(c => c.id === this.editingCourse.id)
+          if (index !== -1) {
+            this.courses.splice(index, 1, updatedCourse)
+          }
+        }
+        
         this.editingCourse = null
-        
-        // Show success message
-        // this.$toast.success('Course updated successfully!')
+        this.$toast.success('Course updated successfully!')
       } catch (error) {
         console.error('Error updating course:', error)
         // Handle error response

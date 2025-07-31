@@ -18,8 +18,17 @@
   
   export default {
     components: { Navbar, Sidebar },
-      name: 'Dashboard'
-  
+    name: 'Dashboard',
+    head() {
+      return {
+        script: [
+          {
+            src: 'https://cdn.tailwindcss.com',
+            defer: true
+          }
+        ]
+      }
+    }
   }
   </script>
   
