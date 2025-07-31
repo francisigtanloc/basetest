@@ -583,7 +583,7 @@ export default {
         }
         
         this.editingCourse = null
-        this.$toast.success('Course updated successfully!')
+        // this.$toast.success('Course updated successfully!')
       } catch (error) {
         console.error('Error updating course:', error)
         // Handle error response
