@@ -296,6 +296,167 @@ class CoursesView(APIView):
             logger.error(f"Error updating course: {str(e)}\n{traceback.format_exc()}")
             return Response({"error": str(e)}, status=400)
 
+# Debug view for authentication testing
+class DebugAuthView(APIView):
+    permission_classes = (AllowAny,)
+    
+    def get(self, request):
+        """Debug endpoint to check available databases and tables, and show Users table data"""
+        try:
+            # Get all databases
+            databases = Database.objects.all()
+            db_info = []
+            users_data = None
+            
+            for db in databases:
+                tables = Table.objects.filter(database=db)
+                table_info = []
+                
+                for table in tables:
+                    # Get fields for each table
+                    fields = Field.objects.filter(table=table)
+                    field_info = [{"name": field.name, "type": field.__class__.__name__} for field in fields]
+                    table_info.append({
+                        "name": table.name,
+                        "id": table.id,
+                        "fields": field_info
+                    })
+                    
+                    # If this is the Users table, get the actual data
+                    if table.name == "Users":
+                        try:
+                            model = table.get_model()
+                            users = model.objects.all()
+                            users_list = []
+                            
+                            # Get field mappings
+                            field_mappings = {}
+                            for field_obj in model.get_field_objects():
+                                field_name = field_obj['field'].name.lower()
+                                field_id = field_obj['field'].id
+                                field_mappings[field_name] = field_id
+                            
+                            for user in users[:5]:  # Limit to first 5 users
+                                user_data = {"id": user.id}
+                                for field_name, field_id in field_mappings.items():
+                                    try:
+                                        value = getattr(user, f'field_{field_id}', None)
+                                        user_data[field_name] = value
+                                    except:
+                                        user_data[field_name] = None
+                                users_list.append(user_data)
+                            
+                            users_data = {
+                                "field_mappings": field_mappings,
+                                "users": users_list,
+                                "total_count": users.count()
+                            }
+                        except Exception as e:
+                            users_data = {"error": str(e)}
+                
+                db_info.append({
+                    "name": db.name,
+                    "id": db.id,
+                    "tables": table_info
+                })
+            
+            response_data = {
+                "databases": db_info
+            }
+            
+            if users_data:
+                response_data["users_table_data"] = users_data
+            
+            return Response(response_data)
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+    
+    def post(self, request):
+        """Test authentication with provided credentials, or add test user"""
+        try:
+            action = request.data.get('action', 'test_auth')
+            
+            if action == 'add_test_user':
+                # Add a test user to the Users table
+                database = Database.objects.get(name="Hublms")
+                table = Table.objects.get(database=database, name="Users")
+                model = table.get_model()
+                
+                # Get field mappings
+                field_mappings = {}
+                for field_obj in model.get_field_objects():
+                    field_name = field_obj['field'].name.lower()
+                    field_id = field_obj['field'].id
+                    field_mappings[field_name] = field_id
+                
+                # Create test user data
+                test_user_data = {}
+                if 'name' in field_mappings:
+                    test_user_data[f'field_{field_mappings["name"]}'] = 'Test User'
+                if 'email' in field_mappings:
+                    test_user_data[f'field_{field_mappings["email"]}'] = 'test@email.com'
+                if 'active' in field_mappings:
+                    test_user_data[f'field_{field_mappings["active"]}'] = True
+                if 'password' in field_mappings:
+                    test_user_data[f'field_{field_mappings["password"]}'] = 'testpassword123'
+                
+                # Check if user already exists
+                existing_user = model.objects.filter(**{f'field_{field_mappings["email"]}': 'test@email.com'}).first()
+                if existing_user:
+                    return Response({
+                        "success": True,
+                        "message": "Test user already exists",
+                        "user_id": existing_user.id
+                    })
+                
+                # Create the test user
+                user = model.objects.create(**test_user_data)
+                
+                return Response({
+                    "success": True,
+                    "message": "Test user created successfully",
+                    "user_id": user.id,
+                    "field_mappings": field_mappings
+                })
+            
+            else:  # Default test_auth action
+                from basetest.authentication import BaserowUserBackend
+                
+                email = request.data.get('email')
+                password = request.data.get('password')
+                
+                if not email or not password:
+                    return Response({"error": "Email and password required"}, status=400)
+                
+                backend = BaserowUserBackend()
+                
+                # Test authentication
+                user = backend.authenticate(request, username=email, password=password)
+                
+                if user:
+                    return Response({
+                        "success": True,
+                        "user": {
+                            "id": user.id,
+                            "email": getattr(user, 'email', 'N/A'),
+                            "name": getattr(user, 'first_name', 'N/A'),
+                            "is_active": getattr(user, 'is_active', 'N/A')
+                        }
+                    })
+                else:
+                    return Response({
+                        "success": False,
+                        "message": "Authentication failed"
+                    })
+                
+        except Exception as e:
+            import traceback
+            return Response({
+                "error": str(e),
+                "traceback": traceback.format_exc()
+            }, status=500)
+
 # Checkpoint 1 Classes - END
 
 class ObtainJSONWebTokens(TokenObtainPairView):

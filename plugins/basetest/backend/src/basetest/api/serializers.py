@@ -39,8 +39,7 @@ from baserow.core.user.utils import (
     normalize_email_address,
 )
 
-from basetest.models import LmsUsers
-from basetest.authentication import LmsUserBackend
+from basetest.authentication import BaserowUserBackend
 
 User = get_user_model()
 
@@ -441,7 +440,7 @@ class ShareOnboardingDetailsWithBaserowSerializer(serializers.Serializer):
 
 class LmsTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
-    Custom token serializer that authenticates against lms_users table
+    Custom token serializer that authenticates against Baserow Users table
     """
     email = NormalizedEmailField(required=True)
     password = serializers.CharField(required=True)
@@ -454,7 +453,7 @@ class LmsTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         """
-        Validate credentials against lms_users table
+        Validate credentials against Baserow Users table
         """
         email = attrs.get('email')
         password = attrs.get('password')
@@ -464,8 +463,8 @@ class LmsTokenObtainPairSerializer(TokenObtainPairSerializer):
                 'detail': 'Email and password are required.'
             })
 
-        # Use our custom authentication backend
-        backend = LmsUserBackend()
+        # Use our custom Baserow authentication backend
+        backend = BaserowUserBackend()
         user = backend.authenticate(
             request=self.context.get('request'),
             username=email,
@@ -480,10 +479,18 @@ class LmsTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Create the token payload
         refresh = RefreshToken()
         refresh['user_id'] = user.id
-        refresh['email'] = user.email
+        refresh['email'] = getattr(user, 'email', email)
+        
+        # Add user data to the response
+        user_data = {
+            'id': user.id,
+            'email': getattr(user, 'email', email),
+            'name': getattr(user, 'first_name', ''),
+            'is_active': getattr(user, 'is_active', True)
+        }
 
         return {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
-            'user': user
+            'user': user_data
         }
