@@ -222,6 +222,72 @@
         </div>
       </div>
 
+      <!-- Charts Section -->
+      <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+          <h2 class="h1 fw-bold">Chart.js Samples</h2>
+          <p class="text-muted">Interactive charts powered by Chart.js 4.4.1</p>
+        </div>
+        
+        <!-- Line and Bar Charts Row -->
+        <div class="col-lg-6 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+              <h5 class="card-title mb-0">
+                <i class="fas fa-chart-line me-2"></i>
+                Line Chart
+              </h5>
+            </div>
+            <div class="card-body">
+              <canvas id="lineChart" style="max-height: 300px;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-success text-white">
+              <h5 class="card-title mb-0">
+                <i class="fas fa-chart-bar me-2"></i>
+                Bar Chart
+              </h5>
+            </div>
+            <div class="card-body">
+              <canvas id="barChart" style="max-height: 300px;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pie and Doughnut Charts Row -->
+        <div class="col-lg-6 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-warning text-dark">
+              <h5 class="card-title mb-0">
+                <i class="fas fa-chart-pie me-2"></i>
+                Pie Chart
+              </h5>
+            </div>
+            <div class="card-body">
+              <canvas id="pieChart" style="max-height: 300px;"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+          <div class="card h-100 shadow-sm border-0">
+            <div class="card-header bg-info text-white">
+              <h5 class="card-title mb-0">
+                <i class="fas fa-chart-pie me-2"></i>
+                Doughnut Chart
+              </h5>
+            </div>
+            <div class="card-body">
+              <canvas id="doughnutChart" style="max-height: 300px;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Modal Trigger -->
       <div class="row mb-5">
         <div class="col-12 text-center">
@@ -271,7 +337,7 @@ export default {
       import('@basetest/assets/bootstrap5/css/bootstrap.min.css')
       
       // Import Bootstrap JS
-      import('@basetest/assets/bootstrap5/js/bootstrap.bundle.min.js').then(bootstrap => {
+      import('@basetest/assets/bootstrap5/js/bootstrap.bundle.min.js').then(() => {
         console.log('Bootstrap 5 loaded successfully')
         // Bootstrap components are now available
         if (window.bootstrap) {
@@ -280,6 +346,140 @@ export default {
       }).catch(err => {
         console.error('Bootstrap loading failed:', err)
       })
+
+      // Import Chart.js
+      import('@basetest/assets/chartjs/chart.umd.js').then(() => {
+        console.log('Chart.js loaded successfully')
+        // Initialize charts after Chart.js is loaded
+        this.initializeCharts()
+      }).catch(err => {
+        console.error('Chart.js loading failed:', err)
+      })
+    }
+  },
+  methods: {
+    initializeCharts() {
+      // Line Chart
+      const lineCtx = document.getElementById('lineChart')?.getContext('2d')
+      if (lineCtx) {
+        new Chart(lineCtx, {
+          type: 'line',
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            datasets: [{
+              label: 'Sales 2024',
+              data: [65, 59, 80, 81, 56, 55, 40],
+              borderColor: 'rgb(75, 192, 192)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              tension: 0.1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Monthly Sales Chart'
+              }
+            }
+          }
+        })
+      }
+
+      // Bar Chart
+      const barCtx = document.getElementById('barChart')?.getContext('2d')
+      if (barCtx) {
+        new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            datasets: [{
+              label: 'Revenue',
+              data: [300, 450, 200, 600],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+              ],
+              borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Quarterly Revenue'
+              }
+            }
+          }
+        })
+      }
+
+      // Pie Chart
+      const pieCtx = document.getElementById('pieChart')?.getContext('2d')
+      if (pieCtx) {
+        new Chart(pieCtx, {
+          type: 'pie',
+          data: {
+            labels: ['Desktop', 'Mobile', 'Tablet'],
+            datasets: [{
+              data: [55, 35, 10],
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Device Usage'
+              }
+            }
+          }
+        })
+      }
+
+      // Doughnut Chart
+      const doughnutCtx = document.getElementById('doughnutChart')?.getContext('2d')
+      if (doughnutCtx) {
+        new Chart(doughnutCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple'],
+            datasets: [{
+              data: [300, 50, 100, 200, 150],
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(153, 102, 255)'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Color Distribution'
+              }
+            }
+          }
+        })
+      }
     }
   }
 }
@@ -323,6 +523,26 @@ export default {
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
 }
 
+/* Chart.js Custom Styling */
+.card-header {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-header .fas {
+  opacity: 0.8;
+}
+
+canvas {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Chart container styling */
+.chart-container {
+  position: relative;
+  padding: 1rem 0;
+}
+
 @media (max-width: 768px) {
   .display-4 {
     font-size: 2rem;
@@ -334,6 +554,11 @@ export default {
   
   .stat-item h2 {
     font-size: 2rem;
+  }
+  
+  /* Responsive chart sizing */
+  canvas {
+    max-height: 250px !important;
   }
 }
 </style>
