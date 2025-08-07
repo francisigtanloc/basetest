@@ -200,7 +200,7 @@
                             </a>
                             <a href="#">
                               <div class="notif-img">
-                                <img src="/img/profile2.jpg" alt="Img Profile" />
+                                <img src="@basetest/assets/img/profile2.jpg" alt="Img Profile" />
                               </div>
                               <div class="notif-content">
                                 <span class="block">
@@ -316,7 +316,7 @@
                     >
                       <div class="avatar-sm">
                         <img
-                          src="/img/profile.jpg"
+                          src="@basetest/assets/img/profile.jpg"
                           alt="..."
                           class="avatar-img rounded-circle"
                         />
@@ -332,7 +332,7 @@
                           <div class="user-box">
                             <div class="avatar-lg">
                               <img
-                                src="/img/profile.jpg"
+                                src="@basetest/assets/img/profile.jpg"
                                 alt="image profile"
                                 class="avatar-img rounded"
                               />

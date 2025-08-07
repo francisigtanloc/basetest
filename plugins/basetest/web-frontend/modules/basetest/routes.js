@@ -26,5 +26,21 @@ export const routes = [
     path: '/bootstrap',
     component: path.resolve(__dirname, 'pages/bootstrap/home.vue'),
   },
+  {
+    name: 'new_test',
+    path: '/bootstrap/new_test',
+    component: path.resolve(__dirname, 'pages/bootstrap/new_test.vue'),
+  },
+  {
+    name: 'samples',
+    path: '/samples',
+    component: path.resolve(__dirname, 'pages/samples/index.vue'),
+  },
+  {
+    name: 'samples_home',
+    path: '/samples/home',
+    component: path.resolve(__dirname, 'pages/samples/home.vue'),
+  },
+  
 
 ]

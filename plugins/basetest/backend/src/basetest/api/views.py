@@ -1,16 +1,112 @@
+# Checkpoint 1
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from baserow.contrib.database.models import Database
 from baserow.contrib.database.table.models import Table
 from baserow.contrib.database.fields.models import Field
+from baserow.api.decorators import map_exceptions, validate_body
+from rest_framework.exceptions import AuthenticationFailed
+# Checkpoint 1 - END
 
+# Checkpoint 2
+from drf_spectacular.utils import OpenApiParameter, extend_schema
+from rest_framework_simplejwt.views import (
+    TokenBlacklistView,
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
+from .schemas import (
+    authenticate_user_schema,
+    create_user_response_schema,
+    verify_user_schema,
+)
+from baserow.api.schemas import get_error_schema
+
+from .serializers import (
+    AccountSerializer,
+    ChangePasswordBodyValidationSerializer,
+    DashboardSerializer,
+    LmsTokenObtainPairSerializer,
+    NormalizedEmailField,
+    PublicUserSerializer,
+    RegisterSerializer,
+    ResetPasswordBodyValidationSerializer,
+    SendResetPasswordEmailBodyValidationSerializer,
+    SendVerifyEmailAddressSerializer,
+    ShareOnboardingDetailsWithBaserowSerializer,
+    TokenBlacklistSerializer,
+    TokenObtainPairWithUserSerializer,
+    TokenRefreshWithUserSerializer,
+    TokenVerifyWithUserSerializer,
+    UserSerializer,
+    VerifyEmailAddressSerializer,
+)
+from baserow.core.auth_provider.exceptions import (
+    AuthProviderDisabled,
+    EmailVerificationRequired,
+)
+from baserow.core.auth_provider.handler import PasswordProviderHandler
+from baserow.core.exceptions import (
+    BaseURLHostnameNotAllowed,
+    LockConflict,
+    WorkspaceInvitationDoesNotExist,
+    WorkspaceInvitationEmailMismatch,
+)
+from baserow.core.handler import CoreHandler
+from baserow.core.models import Settings, Template, WorkspaceInvitation
+from baserow.core.user.actions import (
+    ChangeUserPasswordActionType,
+    CreateUserActionType,
+    ResetUserPasswordActionType,
+    ScheduleUserDeletionActionType,
+    SendResetUserPasswordActionType,
+    SendVerifyEmailAddressActionType,
+    UpdateUserActionType,
+    VerifyEmailAddressActionType,
+)
+from baserow.core.user.exceptions import (
+    DeactivatedUserException,
+    DisabledSignupError,
+    EmailAlreadyVerified,
+    InvalidPassword,
+    InvalidVerificationToken,
+    RefreshTokenAlreadyBlacklisted,
+    ResetPasswordDisabledError,
+    UserAlreadyExist,
+    UserIsLastAdmin,
+    UserNotFound,
+)
+from .errors import (
+    ERROR_ALREADY_EXISTS,
+    ERROR_AUTH_PROVIDER_DISABLED,
+    ERROR_CLIENT_SESSION_ID_HEADER_NOT_SET,
+    ERROR_DEACTIVATED_USER,
+    ERROR_DISABLED_RESET_PASSWORD,
+    ERROR_DISABLED_SIGNUP,
+    ERROR_EMAIL_ALREADY_VERIFIED,
+    ERROR_EMAIL_VERIFICATION_REQUIRED,
+    ERROR_INVALID_CREDENTIALS,
+    ERROR_INVALID_OLD_PASSWORD,
+    ERROR_INVALID_REFRESH_TOKEN,
+    ERROR_INVALID_VERIFICATION_TOKEN,
+    ERROR_REFRESH_TOKEN_ALREADY_BLACKLISTED,
+    ERROR_UNDO_REDO_LOCK_CONFLICT,
+    ERROR_USER_IS_LAST_ADMIN,
+    ERROR_USER_NOT_FOUND,
+)
+
+
+# Checkpoint 2 - END
+
+
+# Checkpoint 1 Classes
 class StartingView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
         return Response({"title": "Starting title", "content": "Starting text"})
-
 
 class CoursesView(APIView):
     permission_classes = (AllowAny,)
@@ -199,5 +295,48 @@ class CoursesView(APIView):
             import traceback
             logger.error(f"Error updating course: {str(e)}\n{traceback.format_exc()}")
             return Response({"error": str(e)}, status=400)
+
+# Checkpoint 1 Classes - END
+
+class ObtainJSONWebTokens(TokenObtainPairView):
+    """
+    A slightly modified version of the ObtainJSONWebToken that uses an email as
+    username and normalizes that email address using the normalize_email_address
+    utility function. Now authenticates against the lms_users table.
+    """
+
+    serializer_class = LmsTokenObtainPairSerializer
+
+    @extend_schema(
+        tags=["User"],
+        operation_id="token_auth",
+        description=(
+            "Authenticates an existing user based on their email and their password. "
+            "If successful, an access token and a refresh token will be returned."
+        ),
+        responses={
+            200: create_user_response_schema,
+            401: get_error_schema(
+                [
+                    "ERROR_INVALID_CREDENTIALS",
+                    "ERROR_DEACTIVATED_USER",
+                    "ERROR_AUTH_PROVIDER_DISABLED",
+                    "ERROR_EMAIL_VERIFICATION_REQUIRED",
+                ]
+            ),
+        },
+        auth=[],
+    )
+    @map_exceptions                                                                                                                                                                                                                   (
+        {
+            AuthenticationFailed: ERROR_INVALID_CREDENTIALS,
+            DeactivatedUserException: ERROR_DEACTIVATED_USER,
+            AuthProviderDisabled: ERROR_AUTH_PROVIDER_DISABLED,
+            EmailVerificationRequired: ERROR_EMAIL_VERIFICATION_REQUIRED,
+        }
+    )
+    def post(self, *args, **kwargs):
+        return super().post(*args, **kwargs)
+
 
 
