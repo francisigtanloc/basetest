@@ -1,6 +1,4 @@
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth.hashers import check_password
-from django.utils import timezone
 from baserow.contrib.database.models import Database
 from baserow.contrib.database.table.models import Table
 import logging
@@ -38,7 +36,7 @@ class BaserowUserBackend(BaseBackend):
                 logger.error("No database found")
                 return None, None
                 
-            table = Table.objects.get(database=database, name="lms_users")
+            table = Table.objects.get(database=database, name="Users")
             model = table.get_model()
             logger.info(f"Successfully got Users table from database: {database.name}")
             return model, table

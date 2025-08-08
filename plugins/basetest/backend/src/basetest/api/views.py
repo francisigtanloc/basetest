@@ -1,112 +1,41 @@
-# Checkpoint 1
+import logging
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.exceptions import AuthenticationFailed
+from drf_spectacular.utils import extend_schema
+
 from baserow.contrib.database.models import Database
 from baserow.contrib.database.table.models import Table
 from baserow.contrib.database.fields.models import Field
-from baserow.api.decorators import map_exceptions, validate_body
-from rest_framework.exceptions import AuthenticationFailed
-# Checkpoint 1 - END
-
-# Checkpoint 2
-from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework_simplejwt.views import (
-    TokenBlacklistView,
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView,
-)
-from .schemas import (
-    authenticate_user_schema,
-    create_user_response_schema,
-    verify_user_schema,
-)
+from baserow.api.decorators import map_exceptions
 from baserow.api.schemas import get_error_schema
-
-from .serializers import (
-    AccountSerializer,
-    ChangePasswordBodyValidationSerializer,
-    DashboardSerializer,
-    LmsTokenObtainPairSerializer,
-    NormalizedEmailField,
-    PublicUserSerializer,
-    RegisterSerializer,
-    ResetPasswordBodyValidationSerializer,
-    SendResetPasswordEmailBodyValidationSerializer,
-    SendVerifyEmailAddressSerializer,
-    ShareOnboardingDetailsWithBaserowSerializer,
-    TokenBlacklistSerializer,
-    TokenObtainPairWithUserSerializer,
-    TokenRefreshWithUserSerializer,
-    TokenVerifyWithUserSerializer,
-    UserSerializer,
-    VerifyEmailAddressSerializer,
-)
 from baserow.core.auth_provider.exceptions import (
     AuthProviderDisabled,
     EmailVerificationRequired,
 )
-from baserow.core.auth_provider.handler import PasswordProviderHandler
-from baserow.core.exceptions import (
-    BaseURLHostnameNotAllowed,
-    LockConflict,
-    WorkspaceInvitationDoesNotExist,
-    WorkspaceInvitationEmailMismatch,
-)
-from baserow.core.handler import CoreHandler
-from baserow.core.models import Settings, Template, WorkspaceInvitation
-from baserow.core.user.actions import (
-    ChangeUserPasswordActionType,
-    CreateUserActionType,
-    ResetUserPasswordActionType,
-    ScheduleUserDeletionActionType,
-    SendResetUserPasswordActionType,
-    SendVerifyEmailAddressActionType,
-    UpdateUserActionType,
-    VerifyEmailAddressActionType,
-)
-from baserow.core.user.exceptions import (
-    DeactivatedUserException,
-    DisabledSignupError,
-    EmailAlreadyVerified,
-    InvalidPassword,
-    InvalidVerificationToken,
-    RefreshTokenAlreadyBlacklisted,
-    ResetPasswordDisabledError,
-    UserAlreadyExist,
-    UserIsLastAdmin,
-    UserNotFound,
-)
+from baserow.core.user.exceptions import DeactivatedUserException
+
+from .serializers import LmsTokenObtainPairSerializer
+from .schemas import create_user_response_schema
 from .errors import (
-    ERROR_ALREADY_EXISTS,
-    ERROR_AUTH_PROVIDER_DISABLED,
-    ERROR_CLIENT_SESSION_ID_HEADER_NOT_SET,
-    ERROR_DEACTIVATED_USER,
-    ERROR_DISABLED_RESET_PASSWORD,
-    ERROR_DISABLED_SIGNUP,
-    ERROR_EMAIL_ALREADY_VERIFIED,
-    ERROR_EMAIL_VERIFICATION_REQUIRED,
     ERROR_INVALID_CREDENTIALS,
-    ERROR_INVALID_OLD_PASSWORD,
-    ERROR_INVALID_REFRESH_TOKEN,
-    ERROR_INVALID_VERIFICATION_TOKEN,
-    ERROR_REFRESH_TOKEN_ALREADY_BLACKLISTED,
-    ERROR_UNDO_REDO_LOCK_CONFLICT,
-    ERROR_USER_IS_LAST_ADMIN,
-    ERROR_USER_NOT_FOUND,
+    ERROR_DEACTIVATED_USER,
+    ERROR_AUTH_PROVIDER_DISABLED,
+    ERROR_EMAIL_VERIFICATION_REQUIRED,
 )
 
+logger = logging.getLogger(__name__)
 
-# Checkpoint 2 - END
 
-
-# Checkpoint 1 Classes
 class StartingView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request):
         return Response({"title": "Starting title", "content": "Starting text"})
+
 
 class CoursesView(APIView):
     permission_classes = (AllowAny,)
@@ -120,9 +49,6 @@ class CoursesView(APIView):
     
     def get_course_data(self, course):
         """Helper method to format course data"""
-        import logging
-        logger = logging.getLogger(__name__)
-        
         try:
             # Get all field objects from the model
             field_objects = course.get_field_objects()
@@ -149,6 +75,43 @@ class CoursesView(APIView):
                             field_value = bool(field_value)
                         elif field_type in ['date', 'last_modified', 'created_on']:
                             field_value = field_value.isoformat() if field_value else None
+                        elif field_type == 'link_row':
+                            # Handle Baserow link table relationships
+                            if field_value:
+                                if hasattr(field_value, 'all'):
+                                    # Many-to-many relationship - get all related objects
+                                    related_items = []
+                                    for related_obj in field_value.all():
+                                        # Try to get a meaningful display value
+                                        display_value = str(related_obj.id)
+                                        # Look for common display fields
+                                        for attr in ['name', 'title', 'display_name', 'value']:
+                                            if hasattr(related_obj, f'field_{attr}'):
+                                                try:
+                                                    attr_value = getattr(related_obj, f'field_{attr}')
+                                                    if attr_value:
+                                                        display_value = str(attr_value)
+                                                        break
+                                                except:
+                                                    continue
+                                        related_items.append({'id': related_obj.id, 'value': display_value})
+                                    field_value = related_items
+                                elif hasattr(field_value, 'id'):
+                                    # Single relationship
+                                    display_value = str(field_value.id)
+                                    # Look for common display fields
+                                    for attr in ['name', 'title', 'display_name', 'value']:
+                                        if hasattr(field_value, f'field_{attr}'):
+                                            try:
+                                                attr_value = getattr(field_value, f'field_{attr}')
+                                                if attr_value:
+                                                    display_value = str(attr_value)
+                                                    break
+                                            except:
+                                                continue
+                                    field_value = {'id': field_value.id, 'value': display_value}
+                                else:
+                                    field_value = None
                     
                     course_data[field_name] = field_value
                 except Exception as e:
@@ -244,7 +207,7 @@ class CoursesView(APIView):
             
         except Exception as e:
             import traceback
-            logger.error(f"Error creating course: {str(e)}\n{traceback.format_exc()}")
+            logger.error(f"Error creating course: {str(e)}\\n{traceback.format_exc()}")
             return Response({"error": str(e)}, status=400)
     
     def put(self, request, course_id):
@@ -293,10 +256,10 @@ class CoursesView(APIView):
             return Response({"error": "Course not found"}, status=404)
         except Exception as e:
             import traceback
-            logger.error(f"Error updating course: {str(e)}\n{traceback.format_exc()}")
+            logger.error(f"Error updating course: {str(e)}\\n{traceback.format_exc()}")
             return Response({"error": str(e)}, status=400)
 
-# Debug view for authentication testing
+
 class DebugAuthView(APIView):
     permission_classes = (AllowAny,)
     
@@ -457,15 +420,11 @@ class DebugAuthView(APIView):
                 "traceback": traceback.format_exc()
             }, status=500)
 
-# Checkpoint 1 Classes - END
 
 class ObtainJSONWebTokens(TokenObtainPairView):
     """
-    A slightly modified version of the ObtainJSONWebToken that uses an email as
-    username and normalizes that email address using the normalize_email_address
-    utility function. Now authenticates against the lms_users table.
+    Custom JWT token view that authenticates against Baserow Users table
     """
-
     serializer_class = LmsTokenObtainPairSerializer
 
     @extend_schema(
@@ -477,27 +436,20 @@ class ObtainJSONWebTokens(TokenObtainPairView):
         ),
         responses={
             200: create_user_response_schema,
-            401: get_error_schema(
-                [
-                    "ERROR_INVALID_CREDENTIALS",
-                    "ERROR_DEACTIVATED_USER",
-                    "ERROR_AUTH_PROVIDER_DISABLED",
-                    "ERROR_EMAIL_VERIFICATION_REQUIRED",
-                ]
-            ),
+            401: get_error_schema([
+                "ERROR_INVALID_CREDENTIALS",
+                "ERROR_DEACTIVATED_USER",
+                "ERROR_AUTH_PROVIDER_DISABLED",
+                "ERROR_EMAIL_VERIFICATION_REQUIRED",
+            ]),
         },
         auth=[],
     )
-    @map_exceptions                                                                                                                                                                                                                   (
-        {
-            AuthenticationFailed: ERROR_INVALID_CREDENTIALS,
-            DeactivatedUserException: ERROR_DEACTIVATED_USER,
-            AuthProviderDisabled: ERROR_AUTH_PROVIDER_DISABLED,
-            EmailVerificationRequired: ERROR_EMAIL_VERIFICATION_REQUIRED,
-        }
-    )
+    @map_exceptions({
+        AuthenticationFailed: ERROR_INVALID_CREDENTIALS,
+        DeactivatedUserException: ERROR_DEACTIVATED_USER,
+        AuthProviderDisabled: ERROR_AUTH_PROVIDER_DISABLED,
+        EmailVerificationRequired: ERROR_EMAIL_VERIFICATION_REQUIRED,
+    })
     def post(self, *args, **kwargs):
         return super().post(*args, **kwargs)
-
-
-

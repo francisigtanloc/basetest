@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Edit User - LMS Admin</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="../../assets/img/kaiadmin/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <!-- Fonts and icons -->
+    <script src="../../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["../../assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../../assets/css/demo.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="../index.html" class="logo">
+              <img
+                src="../../assets/img/kaiadmin/logo_light.svg"
+                alt="LMS Admin"
+                class="navbar-brand"
+                height="20"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item">
+                <a href="../index.html">
+                  <i class="fas fa-home"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">User Management</h4>
+              </li>
+              <li class="nav-item active submenu">
+                <a data-bs-toggle="collapse" href="#users">
+                  <i class="fas fa-users"></i>
+                  <p>Users</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse show" id="users">
+                  <ul class="nav nav-collapse">
+                    <li class="active">
+                      <a href="list.html">
+                        <span class="sub-item">All Users</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="add.html">
+                        <span class="sub-item">Add User</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#students">
+                  <i class="fas fa-user-graduate"></i>
+                  <p>Students</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="students">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../students/list.html">
+                        <span class="sub-item">All Students</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../students/add.html">
+                        <span class="sub-item">Add Student</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#instructors">
+                  <i class="fas fa-chalkboard-teacher"></i>
+                  <p>Instructors</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="instructors">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../instructors/list.html">
+                        <span class="sub-item">All Instructors</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../instructors/add.html">
+                        <span class="sub-item">Add Instructor</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Course Management</h4>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#courses">
+                  <i class="fas fa-book"></i>
+                  <p>Courses</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="courses">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../courses/list.html">
+                        <span class="sub-item">All Courses</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../courses/add.html">
+                        <span class="sub-item">Add Course</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../courses/categories.html">
+                        <span class="sub-item">Categories</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#lessons">
+                  <i class="fas fa-play-circle"></i>
+                  <p>Lessons</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="lessons">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../lessons/list.html">
+                        <span class="sub-item">All Lessons</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../lessons/add.html">
+                        <span class="sub-item">Add Lesson</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Reports</h4>
+              </li>
+              <li class="nav-item">
+                <a href="../reports/analytics.html">
+                  <i class="fas fa-chart-bar"></i>
+                  <p>Analytics</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../settings.html">
+                  <i class="fas fa-cog"></i>
+                  <p>Settings</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="../index.html" class="logo">
+                <img
+                  src="../../assets/img/kaiadmin/logo_light.svg"
+                  alt="LMS Admin"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+            <div class="container-fluid">
+              <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-search pe-1">
+                      <i class="fa fa-search search-icon"></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search users..."
+                    class="form-control"
+                  />
+                </div>
+              </nav>
+
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" aria-haspopup="true">
+                    <i class="fa fa-search"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-search animated fadeIn">
+                    <form class="navbar-left navbar-form nav-search">
+                      <div class="input-group">
+                        <input type="text" placeholder="Search..." class="form-control" />
+                      </div>
+                    </form>
+                  </ul>
+                </li>
+
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <div class="avatar-sm">
+                      <img src="../../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold">Admin</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div class="avatar-lg">
+                            <img src="../../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          </div>
+                          <div class="u-text">
+                            <h4>Admin</h4>
+                            <p class="text-muted">admin@lms.com</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container">
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">Edit User - John Smith</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="../index.html">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="list.html">Users</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Edit User</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">User Information</div>
+                  </div>
+                  <div class="card-body">
+                    <form id="editUserForm">
+                      <input type="hidden" id="userId" name="userId" value="USR001" />
+                      
+                      <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="firstName"
+                              name="firstName"
+                              value="John"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="lastName"
+                              name="lastName"
+                              value="Smith"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="email"
+                          name="email"
+                          value="john.smith@email.com"
+                          required
+                        />
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input
+                              type="tel"
+                              class="form-control"
+                              id="phone"
+                              name="phone"
+                              value="+1 (555) 123-4567"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="dateOfBirth"
+                              name="dateOfBirth"
+                              value="1995-03-15"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea
+                          class="form-control"
+                          id="address"
+                          name="address"
+                          rows="3"
+                        >123 Main Street, Apartment 4B</textarea>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="city">City</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="city"
+                              name="city"
+                              value="New York"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="country">Country</label>
+                            <select class="form-select" id="country" name="country">
+                              <option value="">Select country</option>
+                              <option value="US" selected>United States</option>
+                              <option value="UK">United Kingdom</option>
+                              <option value="CA">Canada</option>
+                              <option value="AU">Australia</option>
+                              <option value="DE">Germany</option>
+                              <option value="FR">France</option>
+                              <option value="JP">Japan</option>
+                              <option value="IN">India</option>
+                              <option value="BR">Brazil</option>
+                              <option value="MX">Mexico</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Account Settings</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="role">User Role</label>
+                          <select class="form-select" id="role" name="role" required>
+                            <option value="">Select role</option>
+                            <option value="student" selected>Student</option>
+                            <option value="instructor">Instructor</option>
+                            <option value="admin">Administrator</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="status">Account Status</label>
+                          <select class="form-select" id="status" name="status" required>
+                            <option value="active" selected>Active</option>
+                            <option value="pending">Pending Verification</option>
+                            <option value="blocked">Blocked</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Account Actions</label>
+                      <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-info btn-sm" onclick="resetPassword()">
+                          <i class="fa fa-key"></i> Reset Password
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm" onclick="sendVerificationEmail()">
+                          <i class="fa fa-envelope"></i> Resend Verification
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="viewLoginHistory()">
+                          <i class="fa fa-history"></i> Login History
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Password Change</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="alert alert-info">
+                      <i class="fa fa-info-circle"></i>
+                      Leave password fields empty if you don't want to change the password.
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="password">New Password</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Enter new password (optional)"
+                          />
+                          <small class="form-text text-muted">
+                            Password must be at least 8 characters long
+                          </small>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="confirmPassword">Confirm New Password</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm new password"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Profile Picture</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="text-center mb-3">
+                      <div class="avatar avatar-xl mb-3">
+                        <img
+                          src="../../assets/img/jm_denis.jpg"
+                          alt="Profile"
+                          class="avatar-img rounded-circle"
+                          id="profilePreview"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <input
+                          type="file"
+                          class="form-control"
+                          id="profilePicture"
+                          name="profilePicture"
+                          accept="image/*"
+                        />
+                        <small class="form-text text-muted">
+                          Supported formats: JPG, PNG, GIF. Max size: 5MB
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Additional Information</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="department">Department</label>
+                      <select class="form-select" id="department" name="department">
+                        <option value="">Select department</option>
+                        <option value="computer-science" selected>Computer Science</option>
+                        <option value="business">Business Administration</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="arts">Arts & Humanities</option>
+                        <option value="health">Health Sciences</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="studentId">Student ID</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="studentId"
+                        name="studentId"
+                        value="STU2024001"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="bio">Bio/Notes</label>
+                      <textarea
+                        class="form-control"
+                        id="bio"
+                        name="bio"
+                        rows="4"
+                      >Computer Science major with interest in web development and artificial intelligence.</textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Account Summary</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="text-center">
+                          <h4 class="text-primary">12</h4>
+                          <small class="text-muted">Courses Enrolled</small>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="text-center">
+                          <h4 class="text-success">8</h4>
+                          <small class="text-muted">Completed</small>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-12">
+                        <small class="text-muted">Member since:</small>
+                        <p class="mb-1">January 15, 2024</p>
+                        <small class="text-muted">Last login:</small>
+                        <p class="mb-0">August 5, 2024 at 2:30 PM</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <button type="button" class="btn btn-secondary" onclick="window.location.href='list.html'">
+                        <i class="fa fa-arrow-left"></i> Back to List
+                      </button>
+                      <div>
+                        <button type="button" class="btn btn-danger me-2" onclick="deleteUser()">
+                          <i class="fa fa-trash"></i> Delete User
+                        </button>
+                        <button type="submit" class="btn btn-primary" form="editUserForm" id="submitBtn">
+                          <i class="fa fa-save"></i> Update User
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <nav class="pull-left">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">LMS Admin</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Help </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Privacy </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="copyright">
+              2024, Learning Management System
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="../../assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../../assets/js/core/popper.min.js"></script>
+    <script src="../../assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="../../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- jQuery Validation -->
+    <script src="../../assets/js/plugin/jquery.validate/jquery.validate.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="../../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="../../assets/js/kaiadmin.min.js"></script>
+    <script src="../../assets/js/setting-demo2.js"></script>
+    
+    <script>
+      $(document).ready(function () {
+        // Form validation
+        $("#editUserForm").validate({
+          rules: {
+            firstName: {
+              required: true,
+              minlength: 2
+            },
+            lastName: {
+              required: true,
+              minlength: 2
+            },
+            email: {
+              required: true,
+              email: true
+            },
+            password: {
+              minlength: 8
+            },
+            confirmPassword: {
+              equalTo: "#password"
+            },
+            role: {
+              required: true
+            },
+            status: {
+              required: true
+            }
+          },
+          messages: {
+            firstName: {
+              required: "Please enter first name",
+              minlength: "First name must be at least 2 characters"
+            },
+            lastName: {
+              required: "Please enter last name",
+              minlength: "Last name must be at least 2 characters"
+            },
+            email: {
+              required: "Please enter email address",
+              email: "Please enter a valid email address"
+            },
+            password: {
+              minlength: "Password must be at least 8 characters"
+            },
+            confirmPassword: {
+              equalTo: "Passwords do not match"
+            },
+            role: "Please select a role",
+            status: "Please select account status"
+          },
+          submitHandler: function(form) {
+            updateUser();
+            return false;
+          }
+        });
+
+        // Profile picture preview
+        $("#profilePicture").change(function() {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              $("#profilePreview").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Role-based field visibility
+        $("#role").change(function() {
+          const role = $(this).val();
+          if (role === 'student') {
+            $("#department").closest('.form-group').show();
+            $("#studentId").closest('.form-group').show();
+            $("#studentId").attr('placeholder', 'Enter student ID');
+          } else if (role === 'instructor') {
+            $("#department").closest('.form-group').show();
+            $("#studentId").closest('.form-group').show();
+            $("#studentId").attr('placeholder', 'Enter employee ID');
+          } else {
+            $("#department").closest('.form-group').hide();
+            $("#studentId").closest('.form-group').hide();
+          }
+        });
+      });
+
+      function updateUser() {
+        const formData = new FormData(document.getElementById('editUserForm'));
+        
+        // Show loading state
+        $("#submitBtn").prop("disabled", true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
+
+        // Simulate API call
+        setTimeout(function() {
+          swal({
+            title: "Success!",
+            text: "User has been updated successfully.",
+            type: "success",
+            buttons: {
+              confirm: {
+                className: "btn btn-success",
+              },
+            },
+          }).then(() => {
+            $("#submitBtn").prop("disabled", false).html('<i class="fa fa-save"></i> Update User');
+          });
+        }, 2000);
+      }
+
+      function deleteUser() {
+        swal({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          type: "warning",
+          buttons: {
+            confirm: {
+              text: "Yes, delete it!",
+              className: "btn btn-success",
+            },
+            cancel: {
+              visible: true,
+              className: "btn btn-danger",
+            },
+          },
+        }).then((Delete) => {
+          if (Delete) {
+            swal({
+              title: "Deleted!",
+              text: "User has been deleted.",
+              type: "success",
+              buttons: {
+                confirm: {
+                  className: "btn btn-success",
+                },
+              },
+            }).then(() => {
+              window.location.href = "list.html";
+            });
+          } else {
+            swal.close();
+          }
+        });
+      }
+
+      function resetPassword() {
+        swal({
+          title: "Reset Password?",
+          text: "This will send a password reset email to the user.",
+          type: "info",
+          buttons: {
+            confirm: {
+              text: "Yes, reset!",
+              className: "btn btn-success",
+            },
+            cancel: {
+              visible: true,
+              className: "btn btn-danger",
+            },
+          },
+        }).then((reset) => {
+          if (reset) {
+            swal({
+              title: "Password Reset!",
+              text: "Password reset email has been sent.",
+              type: "success",
+              buttons: {
+                confirm: {
+                  className: "btn btn-success",
+                },
+              },
+            });
+          }
+        });
+      }
+
+      function sendVerificationEmail() {
+        swal({
+          title: "Email Sent!",
+          text: "Verification email has been resent to the user.",
+          type: "success",
+          timer: 2000,
+          buttons: false
+        });
+      }
+
+      function viewLoginHistory() {
+        // This would typically open a modal or navigate to a login history page
+        swal({
+          title: "Login History",
+          text: "This feature would show the user's login history.",
+          type: "info",
+          buttons: {
+            confirm: {
+              className: "btn btn-info",
+            },
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

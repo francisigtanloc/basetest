@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Add User - LMS Admin</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="../../assets/img/kaiadmin/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <!-- Fonts and icons -->
+    <script src="../../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["../../assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../../assets/css/demo.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="../index.html" class="logo">
+              <img
+                src="../../assets/img/kaiadmin/logo_light.svg"
+                alt="LMS Admin"
+                class="navbar-brand"
+                height="20"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item">
+                <a href="../index.html">
+                  <i class="fas fa-home"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">User Management</h4>
+              </li>
+              <li class="nav-item active submenu">
+                <a data-bs-toggle="collapse" href="#users">
+                  <i class="fas fa-users"></i>
+                  <p>Users</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse show" id="users">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="list.html">
+                        <span class="sub-item">All Users</span>
+                      </a>
+                    </li>
+                    <li class="active">
+                      <a href="add.html">
+                        <span class="sub-item">Add User</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#students">
+                  <i class="fas fa-user-graduate"></i>
+                  <p>Students</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="students">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../students/list.html">
+                        <span class="sub-item">All Students</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../students/add.html">
+                        <span class="sub-item">Add Student</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#instructors">
+                  <i class="fas fa-chalkboard-teacher"></i>
+                  <p>Instructors</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="instructors">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../instructors/list.html">
+                        <span class="sub-item">All Instructors</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../instructors/add.html">
+                        <span class="sub-item">Add Instructor</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Course Management</h4>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#courses">
+                  <i class="fas fa-book"></i>
+                  <p>Courses</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="courses">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../courses/list.html">
+                        <span class="sub-item">All Courses</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../courses/add.html">
+                        <span class="sub-item">Add Course</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../courses/categories.html">
+                        <span class="sub-item">Categories</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#lessons">
+                  <i class="fas fa-play-circle"></i>
+                  <p>Lessons</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="lessons">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../lessons/list.html">
+                        <span class="sub-item">All Lessons</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../lessons/add.html">
+                        <span class="sub-item">Add Lesson</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Reports</h4>
+              </li>
+              <li class="nav-item">
+                <a href="../reports/analytics.html">
+                  <i class="fas fa-chart-bar"></i>
+                  <p>Analytics</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../settings.html">
+                  <i class="fas fa-cog"></i>
+                  <p>Settings</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="../index.html" class="logo">
+                <img
+                  src="../../assets/img/kaiadmin/logo_light.svg"
+                  alt="LMS Admin"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+            <div class="container-fluid">
+              <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-search pe-1">
+                      <i class="fa fa-search search-icon"></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search users..."
+                    class="form-control"
+                  />
+                </div>
+              </nav>
+
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false" aria-haspopup="true">
+                    <i class="fa fa-search"></i>
+                  </a>
+                  <ul class="dropdown-menu dropdown-search animated fadeIn">
+                    <form class="navbar-left navbar-form nav-search">
+                      <div class="input-group">
+                        <input type="text" placeholder="Search..." class="form-control" />
+                      </div>
+                    </form>
+                  </ul>
+                </li>
+
+                <li class="nav-item topbar-icon dropdown hidden-caret">
+                  <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-bell"></i>
+                    <span class="notification">3</span>
+                  </a>
+                  <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                    <li>
+                      <div class="dropdown-title">You have 3 new notifications</div>
+                    </li>
+                  </ul>
+                </li>
+
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <div class="avatar-sm">
+                      <img src="../../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold">Admin</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div class="avatar-lg">
+                            <img src="../../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          </div>
+                          <div class="u-text">
+                            <h4>Admin</h4>
+                            <p class="text-muted">admin@lms.com</p>
+                            <a href="../profile.html" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">My Profile</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container">
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">Add New User</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="../index.html">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="list.html">Users</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">Add User</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">User Information</div>
+                  </div>
+                  <div class="card-body">
+                    <form id="addUserForm">
+                      <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="firstName"
+                              name="firstName"
+                              placeholder="Enter first name"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="lastName"
+                              name="lastName"
+                              placeholder="Enter last name"
+                              required
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="email"
+                          name="email"
+                          placeholder="Enter email address"
+                          required
+                        />
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input
+                              type="tel"
+                              class="form-control"
+                              id="phone"
+                              name="phone"
+                              placeholder="Enter phone number"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="dateOfBirth"
+                              name="dateOfBirth"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea
+                          class="form-control"
+                          id="address"
+                          name="address"
+                          rows="3"
+                          placeholder="Enter address"
+                        ></textarea>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="city">City</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="city"
+                              name="city"
+                              placeholder="Enter city"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                            <label for="country">Country</label>
+                            <select class="form-select" id="country" name="country">
+                              <option value="">Select country</option>
+                              <option value="US">United States</option>
+                              <option value="UK">United Kingdom</option>
+                              <option value="CA">Canada</option>
+                              <option value="AU">Australia</option>
+                              <option value="DE">Germany</option>
+                              <option value="FR">France</option>
+                              <option value="JP">Japan</option>
+                              <option value="IN">India</option>
+                              <option value="BR">Brazil</option>
+                              <option value="MX">Mexico</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Account Settings</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="password">Password</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Enter password"
+                            required
+                          />
+                          <small class="form-text text-muted">
+                            Password must be at least 8 characters long
+                          </small>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="confirmPassword">Confirm Password</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Confirm password"
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="role">User Role</label>
+                          <select class="form-select" id="role" name="role" required>
+                            <option value="">Select role</option>
+                            <option value="student">Student</option>
+                            <option value="instructor">Instructor</option>
+                            <option value="admin">Administrator</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                          <label for="status">Account Status</label>
+                          <select class="form-select" id="status" name="status" required>
+                            <option value="active">Active</option>
+                            <option value="pending">Pending Verification</option>
+                            <option value="blocked">Blocked</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="sendWelcomeEmail"
+                          name="sendWelcomeEmail"
+                          checked
+                        />
+                        <label class="form-check-label" for="sendWelcomeEmail">
+                          Send welcome email to user
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="emailVerificationRequired"
+                          name="emailVerificationRequired"
+                        />
+                        <label class="form-check-label" for="emailVerificationRequired">
+                          Require email verification before activation
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Profile Picture</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="text-center mb-3">
+                      <div class="avatar avatar-xl mb-3">
+                        <img
+                          src="../../assets/img/profile.jpg"
+                          alt="Profile"
+                          class="avatar-img rounded-circle"
+                          id="profilePreview"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <input
+                          type="file"
+                          class="form-control"
+                          id="profilePicture"
+                          name="profilePicture"
+                          accept="image/*"
+                        />
+                        <small class="form-text text-muted">
+                          Supported formats: JPG, PNG, GIF. Max size: 5MB
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Additional Information</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="department">Department</label>
+                      <select class="form-select" id="department" name="department">
+                        <option value="">Select department</option>
+                        <option value="computer-science">Computer Science</option>
+                        <option value="business">Business Administration</option>
+                        <option value="engineering">Engineering</option>
+                        <option value="mathematics">Mathematics</option>
+                        <option value="science">Science</option>
+                        <option value="arts">Arts & Humanities</option>
+                        <option value="health">Health Sciences</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="studentId">Student/Employee ID</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="studentId"
+                        name="studentId"
+                        placeholder="Enter ID number"
+                      />
+                    </div>
+
+                    <div class="form-group">
+                      <label for="bio">Bio/Notes</label>
+                      <textarea
+                        class="form-control"
+                        id="bio"
+                        name="bio"
+                        rows="4"
+                        placeholder="Additional information about the user"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <button type="button" class="btn btn-secondary" onclick="window.location.href='list.html'">
+                        <i class="fa fa-arrow-left"></i> Cancel
+                      </button>
+                      <div>
+                        <button type="button" class="btn btn-warning me-2" id="saveDraftBtn">
+                          <i class="fa fa-save"></i> Save as Draft
+                        </button>
+                        <button type="submit" class="btn btn-primary" form="addUserForm" id="submitBtn">
+                          <i class="fa fa-plus"></i> Create User
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <nav class="pull-left">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">LMS Admin</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Help </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Privacy </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="copyright">
+              2024, Learning Management System
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="../../assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../../assets/js/core/popper.min.js"></script>
+    <script src="../../assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="../../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- jQuery Validation -->
+    <script src="../../assets/js/plugin/jquery.validate/jquery.validate.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="../../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="../../assets/js/kaiadmin.min.js"></script>
+    <script src="../../assets/js/setting-demo2.js"></script>
+    
+    <script>
+      $(document).ready(function () {
+        // Form validation
+        $("#addUserForm").validate({
+          rules: {
+            firstName: {
+              required: true,
+              minlength: 2
+            },
+            lastName: {
+              required: true,
+              minlength: 2
+            },
+            email: {
+              required: true,
+              email: true
+            },
+            password: {
+              required: true,
+              minlength: 8
+            },
+            confirmPassword: {
+              required: true,
+              equalTo: "#password"
+            },
+            role: {
+              required: true
+            },
+            status: {
+              required: true
+            }
+          },
+          messages: {
+            firstName: {
+              required: "Please enter first name",
+              minlength: "First name must be at least 2 characters"
+            },
+            lastName: {
+              required: "Please enter last name",
+              minlength: "Last name must be at least 2 characters"
+            },
+            email: {
+              required: "Please enter email address",
+              email: "Please enter a valid email address"
+            },
+            password: {
+              required: "Please enter password",
+              minlength: "Password must be at least 8 characters"
+            },
+            confirmPassword: {
+              required: "Please confirm password",
+              equalTo: "Passwords do not match"
+            },
+            role: "Please select a role",
+            status: "Please select account status"
+          },
+          submitHandler: function(form) {
+            createUser();
+            return false;
+          }
+        });
+
+        // Profile picture preview
+        $("#profilePicture").change(function() {
+          const file = this.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              $("#profilePreview").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Role-based field visibility
+        $("#role").change(function() {
+          const role = $(this).val();
+          if (role === 'student') {
+            $("#department").closest('.form-group').show();
+            $("#studentId").closest('.form-group').show();
+            $("#studentId").attr('placeholder', 'Enter student ID');
+          } else if (role === 'instructor') {
+            $("#department").closest('.form-group').show();
+            $("#studentId").closest('.form-group').show();
+            $("#studentId").attr('placeholder', 'Enter employee ID');
+          } else {
+            $("#department").closest('.form-group').hide();
+            $("#studentId").closest('.form-group').hide();
+          }
+        });
+      });
+
+      function createUser() {
+        const formData = new FormData(document.getElementById('addUserForm'));
+        
+        // Show loading state
+        $("#submitBtn").prop("disabled", true).html('<i class="fa fa-spinner fa-spin"></i> Creating...');
+
+        // Simulate API call
+        setTimeout(function() {
+          swal({
+            title: "Success!",
+            text: "User has been created successfully.",
+            type: "success",
+            buttons: {
+              confirm: {
+                className: "btn btn-success",
+              },
+            },
+          }).then(() => {
+            window.location.href = "list.html";
+          });
+        }, 2000);
+      }
+
+      function saveDraft() {
+        swal({
+          title: "Draft Saved",
+          text: "User draft has been saved successfully.",
+          type: "success",
+          timer: 2000,
+          buttons: false
+        });
+      }
+
+      // Save draft button
+      $("#saveDraftBtn").click(function() {
+        saveDraft();
+      });
+    </script>
+  </body>
+</html>

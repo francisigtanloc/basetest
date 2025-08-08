@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>View User - LMS Admin</title>
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
+    <link
+      rel="icon"
+      href="../../assets/img/kaiadmin/favicon.ico"
+      type="image/x-icon"
+    />
+
+    <!-- Fonts and icons -->
+    <script src="../../assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["../../assets/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="../../assets/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="../../assets/css/demo.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+          <!-- Logo Header -->
+          <div class="logo-header" data-background-color="dark">
+            <a href="../index.html" class="logo">
+              <img
+                src="../../assets/img/kaiadmin/logo_light.svg"
+                alt="LMS Admin"
+                class="navbar-brand"
+                height="20"
+              />
+            </a>
+            <div class="nav-toggle">
+              <button class="btn btn-toggle toggle-sidebar">
+                <i class="gg-menu-right"></i>
+              </button>
+              <button class="btn btn-toggle sidenav-toggler">
+                <i class="gg-menu-left"></i>
+              </button>
+            </div>
+            <button class="topbar-toggler more">
+              <i class="gg-more-vertical-alt"></i>
+            </button>
+          </div>
+          <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+          <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+              <li class="nav-item">
+                <a href="../index.html">
+                  <i class="fas fa-home"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">User Management</h4>
+              </li>
+              <li class="nav-item active submenu">
+                <a data-bs-toggle="collapse" href="#users">
+                  <i class="fas fa-users"></i>
+                  <p>Users</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse show" id="users">
+                  <ul class="nav nav-collapse">
+                    <li class="active">
+                      <a href="list.html">
+                        <span class="sub-item">All Users</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="add.html">
+                        <span class="sub-item">Add User</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#students">
+                  <i class="fas fa-user-graduate"></i>
+                  <p>Students</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="students">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../students/list.html">
+                        <span class="sub-item">All Students</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../students/add.html">
+                        <span class="sub-item">Add Student</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#instructors">
+                  <i class="fas fa-chalkboard-teacher"></i>
+                  <p>Instructors</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="instructors">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../instructors/list.html">
+                        <span class="sub-item">All Instructors</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../instructors/add.html">
+                        <span class="sub-item">Add Instructor</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Course Management</h4>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#courses">
+                  <i class="fas fa-book"></i>
+                  <p>Courses</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="courses">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../courses/list.html">
+                        <span class="sub-item">All Courses</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../courses/add.html">
+                        <span class="sub-item">Add Course</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../courses/categories.html">
+                        <span class="sub-item">Categories</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#lessons">
+                  <i class="fas fa-play-circle"></i>
+                  <p>Lessons</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="lessons">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="../lessons/list.html">
+                        <span class="sub-item">All Lessons</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="../lessons/add.html">
+                        <span class="sub-item">Add Lesson</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-section">
+                <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+                <h4 class="text-section">Reports</h4>
+              </li>
+              <li class="nav-item">
+                <a href="../reports/analytics.html">
+                  <i class="fas fa-chart-bar"></i>
+                  <p>Analytics</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="../settings.html">
+                  <i class="fas fa-cog"></i>
+                  <p>Settings</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+      <div class="main-panel">
+        <div class="main-header">
+          <div class="main-header-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+              <a href="../index.html" class="logo">
+                <img
+                  src="../../assets/img/kaiadmin/logo_light.svg"
+                  alt="LMS Admin"
+                  class="navbar-brand"
+                  height="20"
+                />
+              </a>
+              <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                  <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                  <i class="gg-menu-left"></i>
+                </button>
+              </div>
+              <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+              </button>
+            </div>
+            <!-- End Logo Header -->
+          </div>
+          <!-- Navbar Header -->
+          <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
+            <div class="container-fluid">
+              <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button type="submit" class="btn btn-search pe-1">
+                      <i class="fa fa-search search-icon"></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search users..."
+                    class="form-control"
+                  />
+                </div>
+              </nav>
+
+              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
+                <li class="nav-item topbar-user dropdown hidden-caret">
+                  <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                    <div class="avatar-sm">
+                      <img src="../../assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle" />
+                    </div>
+                    <span class="profile-username">
+                      <span class="op-7">Hi,</span>
+                      <span class="fw-bold">Admin</span>
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-user animated fadeIn">
+                    <div class="dropdown-user-scroll scrollbar-outer">
+                      <li>
+                        <div class="user-box">
+                          <div class="avatar-lg">
+                            <img src="../../assets/img/profile.jpg" alt="image profile" class="avatar-img rounded" />
+                          </div>
+                          <div class="u-text">
+                            <h4>Admin</h4>
+                            <p class="text-muted">admin@lms.com</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Logout</a>
+                      </li>
+                    </div>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <!-- End Navbar -->
+        </div>
+
+        <div class="container">
+          <div class="page-inner">
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">User Profile - John Smith</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="../index.html">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="list.html">Users</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">View User</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="card card-profile">
+                  <div class="card-header" style="background-image: url('../../assets/img/examples/example1.jpeg')">
+                    <div class="profile-picture">
+                      <div class="avatar avatar-xl">
+                        <img
+                          src="../../assets/img/jm_denis.jpg"
+                          alt="..."
+                          class="avatar-img rounded-circle"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="user-profile text-center">
+                      <div class="name">John Smith</div>
+                      <div class="job">Student</div>
+                      <div class="desc">Computer Science Major</div>
+                      <div class="social-media">
+                        <a
+                          class="btn btn-info btn-twitter btn-sm btn-link"
+                          href="#"
+                        >
+                          <span class="btn-label just-icon"
+                            ><i class="icon-social-twitter"></i>
+                          </span>
+                        </a>
+                        <a
+                          class="btn btn-success btn-sm btn-link"
+                          rel="publisher"
+                          href="#"
+                        >
+                          <span class="btn-label just-icon"
+                            ><i class="icon-social-github"></i>
+                          </span>
+                        </a>
+                        <a
+                          class="btn btn-danger btn-sm btn-link"
+                          rel="publisher"
+                          href="#"
+                        >
+                          <span class="btn-label just-icon"
+                            ><i class="icon-social-linkedin"></i>
+                          </span>
+                        </a>
+                      </div>
+                      <div class="view-profile mt-3">
+                        <button onclick="window.location.href='edit.html?id=USR001'" class="btn btn-primary btn-round">
+                          <i class="fa fa-edit"></i> Edit Profile
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <div class="row user-stats text-center">
+                      <div class="col">
+                        <div class="number">12</div>
+                        <div class="title">Courses</div>
+                      </div>
+                      <div class="col">
+                        <div class="number">8</div>
+                        <div class="title">Completed</div>
+                      </div>
+                      <div class="col">
+                        <div class="number">89%</div>
+                        <div class="title">Progress</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Contact Information</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="info-item mb-3">
+                          <div class="info-label">
+                            <i class="fa fa-envelope text-primary"></i> Email
+                          </div>
+                          <div class="info-value">john.smith@email.com</div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">
+                            <i class="fa fa-phone text-primary"></i> Phone
+                          </div>
+                          <div class="info-value">+1 (555) 123-4567</div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">
+                            <i class="fa fa-calendar text-primary"></i> Birth Date
+                          </div>
+                          <div class="info-value">March 15, 1995</div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">
+                            <i class="fa fa-map-marker-alt text-primary"></i> Address
+                          </div>
+                          <div class="info-value">
+                            123 Main Street, Apartment 4B<br />
+                            New York, United States
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-head-row card-tools-still-right">
+                      <div class="card-title">Account Details</div>
+                      <div class="card-tools">
+                        <button class="btn btn-icon btn-link btn-primary btn-xs">
+                          <span class="fa fa-angle-down"></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="info-item mb-3">
+                          <div class="info-label">User ID</div>
+                          <div class="info-value">USR001</div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">Student ID</div>
+                          <div class="info-value">STU2024001</div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">Role</div>
+                          <div class="info-value">
+                            <span class="badge badge-primary">Student</span>
+                          </div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">Department</div>
+                          <div class="info-value">Computer Science</div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="info-item mb-3">
+                          <div class="info-label">Status</div>
+                          <div class="info-value">
+                            <span class="badge badge-success">Active</span>
+                          </div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">Member Since</div>
+                          <div class="info-value">January 15, 2024</div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">Last Login</div>
+                          <div class="info-value">August 5, 2024 at 2:30 PM</div>
+                        </div>
+                        <div class="info-item mb-3">
+                          <div class="info-label">Email Verified</div>
+                          <div class="info-value">
+                            <span class="badge badge-success">
+                              <i class="fa fa-check"></i> Verified
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="info-item">
+                          <div class="info-label">Bio</div>
+                          <div class="info-value">
+                            Computer Science major with interest in web development and artificial intelligence. Passionate about learning new technologies and contributing to open-source projects.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Enrolled Courses</div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>Course</th>
+                            <th>Instructor</th>
+                            <th>Progress</th>
+                            <th>Grade</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div class="fw-bold">Introduction to Programming</div>
+                              <small class="text-muted">CS101</small>
+                            </td>
+                            <td>Dr. Jane Wilson</td>
+                            <td>
+                              <div class="progress progress-sm">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <span class="text-sm">95%</span>
+                            </td>
+                            <td><span class="badge badge-success">A</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="fw-bold">Web Development Basics</div>
+                              <small class="text-muted">CS201</small>
+                            </td>
+                            <td>Prof. Mark Davis</td>
+                            <td>
+                              <div class="progress progress-sm">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <span class="text-sm">75%</span>
+                            </td>
+                            <td><span class="badge badge-info">B+</span></td>
+                            <td><span class="badge badge-warning">In Progress</span></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="fw-bold">Database Management</div>
+                              <small class="text-muted">CS301</small>
+                            </td>
+                            <td>Dr. Sarah Johnson</td>
+                            <td>
+                              <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <span class="text-sm">60%</span>
+                            </td>
+                            <td><span class="badge badge-secondary">-</span></td>
+                            <td><span class="badge badge-info">Active</span></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="fw-bold">Data Structures & Algorithms</div>
+                              <small class="text-muted">CS302</small>
+                            </td>
+                            <td>Prof. Michael Brown</td>
+                            <td>
+                              <div class="progress progress-sm">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                              </div>
+                              <span class="text-sm">40%</span>
+                            </td>
+                            <td><span class="badge badge-secondary">-</span></td>
+                            <td><span class="badge badge-info">Active</span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="card-title">Recent Activity</div>
+                      </div>
+                      <div class="card-body">
+                        <div class="timeline">
+                          <div class="timeline-item">
+                            <div class="timeline-badge bg-success">
+                              <i class="fa fa-graduation-cap"></i>
+                            </div>
+                            <div class="timeline-panel">
+                              <div class="timeline-heading">
+                                <h4 class="timeline-title">Course Completed</h4>
+                                <p><small class="text-muted">2 days ago</small></p>
+                              </div>
+                              <div class="timeline-body">
+                                <p>Completed "Introduction to Programming" with grade A</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="timeline-item">
+                            <div class="timeline-badge bg-info">
+                              <i class="fa fa-file-alt"></i>
+                            </div>
+                            <div class="timeline-panel">
+                              <div class="timeline-heading">
+                                <h4 class="timeline-title">Assignment Submitted</h4>
+                                <p><small class="text-muted">5 days ago</small></p>
+                              </div>
+                              <div class="timeline-body">
+                                <p>Submitted final project for Web Development Basics</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="timeline-item">
+                            <div class="timeline-badge bg-warning">
+                              <i class="fa fa-book"></i>
+                            </div>
+                            <div class="timeline-panel">
+                              <div class="timeline-heading">
+                                <h4 class="timeline-title">Course Enrolled</h4>
+                                <p><small class="text-muted">1 week ago</small></p>
+                              </div>
+                              <div class="timeline-body">
+                                <p>Enrolled in "Data Structures & Algorithms"</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="card-title">Performance Stats</div>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-6 col-stats">
+                            <div class="numbers">
+                              <p class="card-category">Average Grade</p>
+                              <h4 class="card-title">3.7 GPA</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-stats">
+                            <div class="numbers">
+                              <p class="card-category">Attendance Rate</p>
+                              <h4 class="card-title">92%</h4>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6 col-stats">
+                            <div class="numbers">
+                              <p class="card-category">Assignments</p>
+                              <h4 class="card-title">45/48</h4>
+                            </div>
+                          </div>
+                          <div class="col-6 col-stats">
+                            <div class="numbers">
+                              <p class="card-category">Quiz Average</p>
+                              <h4 class="card-title">88%</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <button type="button" class="btn btn-secondary" onclick="window.location.href='list.html'">
+                        <i class="fa fa-arrow-left"></i> Back to List
+                      </button>
+                      <div>
+                        <button type="button" class="btn btn-warning me-2" onclick="sendMessage()">
+                          <i class="fa fa-envelope"></i> Send Message
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='edit.html?id=USR001'">
+                          <i class="fa fa-edit"></i> Edit User
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <nav class="pull-left">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">LMS Admin</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Help </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> Privacy </a>
+                </li>
+              </ul>
+            </nav>
+            <div class="copyright">
+              2024, Learning Management System
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="../../assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="../../assets/js/core/popper.min.js"></script>
+    <script src="../../assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="../../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="../../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <!-- Kaiadmin JS -->
+    <script src="../../assets/js/kaiadmin.min.js"></script>
+    <script src="../../assets/js/setting-demo2.js"></script>
+    
+    <script>
+      function sendMessage() {
+        swal({
+          title: "Send Message",
+          text: "This feature would allow you to send a message to the user.",
+          type: "info",
+          buttons: {
+            confirm: {
+              className: "btn btn-info",
+            },
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

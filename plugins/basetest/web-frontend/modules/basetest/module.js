@@ -7,8 +7,9 @@ export default function () {
     __dirname,
     './'
   )
-  this.addLayout(path.resolve(__dirname, 'layouts/dashboard.vue'), 'dashboard')
-  this.addLayout(path.resolve(__dirname, 'layouts/main.vue'), 'main')
+  // this.addLayout(path.resolve(__dirname, 'layouts/dashboard.vue'), 'dashboard')
+  // this.addLayout(path.resolve(__dirname, 'layouts/main.vue'), 'main')
+  this.addLayout(path.resolve(__dirname, 'layouts/kaiadmin.vue'), 'kaiadmin')
 
   this.extendRoutes((configRoutes) => {
     configRoutes.push(...routes)
