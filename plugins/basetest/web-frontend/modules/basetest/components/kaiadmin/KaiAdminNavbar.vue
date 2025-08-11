@@ -243,7 +243,7 @@
             >
               <div class="avatar-sm">
                 <img
-                  src="@basetest/assets/img/profile.jpg"
+                  :src="currentUser.avatar || '@basetest/assets/img/profile.jpg'"
                   alt="..."
                   class="avatar-img rounded-circle"
                 />
@@ -259,7 +259,7 @@
                   <div class="user-box">
                     <div class="avatar-lg">
                       <img
-                        src="@basetest/assets/img/profile.jpg"
+                        :src="currentUser.avatar || '@basetest/assets/img/profile.jpg'"
                         alt="image profile"
                         class="avatar-img rounded"
                       />
@@ -304,8 +304,9 @@ export default {
       searchQuery: '',
       mobileSearchQuery: '',
       currentUser: {
-        name: 'Hizrian',
-        email: 'hello@example.com'
+        name: 'Student',
+        email: '',
+        avatar: null
       },
       messages: [
         {
@@ -368,7 +369,32 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.loadUserData()
+  },
   methods: {
+    loadUserData() {
+      if (process.client) {
+        const userData = localStorage.getItem('kai_user')
+        if (userData) {
+          try {
+            const user = JSON.parse(userData)
+            this.currentUser = {
+              name: user.name || user.email || 'Student',
+              email: user.email || '',
+              avatar: user.avatar || null
+            }
+          } catch (error) {
+            console.error('Error parsing user data:', error)
+            this.currentUser = {
+              name: 'Student',
+              email: '',
+              avatar: null
+            }
+          }
+        }
+      }
+    },
     performSearch() {
       if (this.searchQuery.trim()) {
         this.$swal({
@@ -449,12 +475,20 @@ export default {
         confirmButtonText: 'Yes, logout!'
       }).then((result) => {
         if (result.value) {
+          // Clear authentication data from localStorage
+          if (process.client) {
+            localStorage.removeItem('kai_access_token')
+            localStorage.removeItem('kai_refresh_token')
+            localStorage.removeItem('kai_user')
+            localStorage.removeItem('kai_remember_me')
+          }
+          
           this.$swal(
             'Logged out!',
             'You have been logged out successfully.',
             'success'
           ).then(() => {
-            this.$router.push('/login')
+            this.$router.push('/kaiadmin/login')
           })
         }
       })

@@ -9,9 +9,26 @@ export const routes = [
   
   // KAI Admin Routes
   {
+    name: 'kaiadmin-login',
+    path: '/kaiadmin/login',
+    component: path.resolve(__dirname, 'pages/kaiadmin/login.vue'),
+  },
+  {
     name: 'kaiadmin-dashboard',
     path: '/kaiadmin/dashboard',
     component: path.resolve(__dirname, 'pages/kaiadmin/dashboard.vue'),
+  },
+  
+  // Student Portal Routes
+  {
+    name: 'student-dashboard',
+    path: '/student/dashboard',
+    component: path.resolve(__dirname, 'pages/student/dashboard.vue'),
+  },
+  {
+    name: 'student-courses',
+    path: '/student/courses',
+    component: path.resolve(__dirname, 'pages/student/courses.vue'),
   },
   
   // Components Routes

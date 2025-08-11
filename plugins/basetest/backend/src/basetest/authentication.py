@@ -1,7 +1,9 @@
 from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth.hashers import check_password
 from baserow.contrib.database.models import Database
 from baserow.contrib.database.table.models import Table
 import logging
+import hashlib
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +57,42 @@ class BaserowUserBackend(BaseBackend):
             field_id = field_obj['field'].id
             field_mappings[field_name] = field_id
         return field_mappings
+    
+    def check_password(self, provided_password, stored_password):
+        """
+        Check if the provided password matches the stored password.
+        Supports multiple password formats:
+        1. Plain text comparison (for development/testing)
+        2. Django hashed passwords
+        3. MD5 hashed passwords (legacy)
+        """
+        if not provided_password or not stored_password:
+            return False
+            
+        # First try direct comparison (plain text)
+        if provided_password == stored_password:
+            logger.info("Password matched via plain text comparison")
+            return True
+            
+        # Try Django password hashing
+        try:
+            if check_password(provided_password, stored_password):
+                logger.info("Password matched via Django hash")
+                return True
+        except Exception as e:
+            logger.debug(f"Django password check failed: {e}")
+            
+        # Try MD5 hash comparison (legacy support)
+        try:
+            md5_hash = hashlib.md5(provided_password.encode()).hexdigest()
+            if md5_hash == stored_password:
+                logger.info("Password matched via MD5 hash")
+                return True
+        except Exception as e:
+            logger.debug(f"MD5 password check failed: {e}")
+            
+        logger.warning("Password verification failed for all methods")
+        return False
 
     def authenticate(self, request, username=None, password=None, **kwargs):
         """
@@ -84,7 +122,20 @@ class BaserowUserBackend(BaseBackend):
                 logger.warning(f"User not found with email: {username}")
                 return None
             
-            # Get the active field value (skip password check for now)
+            # Get the password field value for verification
+            password_field_id = field_mappings.get('password')
+            if not password_field_id:
+                logger.error("Password field not found in Users table")
+                return None
+                
+            stored_password = getattr(user, f'field_{password_field_id}')
+            
+            # Check password
+            if not self.check_password(password, stored_password):
+                logger.warning(f"Invalid password for user: {username}")
+                return None
+                
+            # Get the active field value
             active_field_id = field_mappings.get('active')
             is_active = getattr(user, f'field_{active_field_id}', True) if active_field_id else True
             
@@ -92,14 +143,14 @@ class BaserowUserBackend(BaseBackend):
             logger.info(f"Authentication attempt for {username}")
             logger.info(f"User found in database: {user.id}")
             logger.info(f"User is active: {is_active}")
+            logger.info(f"Password verification: {'passed' if password else 'skipped'}")
             
             # Check if user is active
             if not is_active:
                 logger.warning(f"User {username} is not active")
                 return None
             
-            # Skip password check - just authenticate if email exists and user is active
-            logger.info(f"Email-only authentication successful for {username}")
+            logger.info(f"Full authentication successful for {username}")
             
             # Create a user-like object with required authentication properties
             user._meta.app_label = 'basetest'
