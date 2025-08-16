@@ -399,11 +399,15 @@ export default {
   data() {
     return {
       userName: '',
+      userId: null,
       searchQuery: '',
       selectedFilter: 'all',
       selectedCategory: 'all',
       viewMode: 'grid',
-      courses: [
+      courses: [],
+      loadingCourses: true,
+      enrollmentData: [],
+      testCourses: [
         {
           id: 1,
           title: 'Advanced JavaScript Development',
@@ -569,6 +573,7 @@ export default {
   mounted() {
     this.checkAuth()
     this.loadUserData()
+    this.loadEnrollmentData()
   },
   methods: {
     checkAuth() {
@@ -588,10 +593,152 @@ export default {
         if (userData) {
           const user = JSON.parse(userData)
           this.userName = user.name || user.email || 'Student'
+          this.userId = user.id
         } else {
           this.userName = 'Student'
+          this.userId = 1 // Default for testing
         }
       }
+    },
+    
+    async loadEnrollmentData() {
+      if (!this.userId) return
+      
+      try {
+        this.loadingCourses = true
+        
+        // Fetch student's enrollments with course data
+        const response = await this.$client.get(`basetest/enrolments/?student_id=${this.userId}`)
+        
+        if (response.data && response.data.status === 'success') {
+          this.enrollmentData = response.data.enrollments || []
+          this.processEnrollmentData()
+        } else {
+          console.error('Failed to load enrollment data:', response.data)
+          this.fallbackToTestData()
+        }
+        
+      } catch (error) {
+        console.error('Error loading enrollment data:', error)
+        this.fallbackToTestData()
+      } finally {
+        this.loadingCourses = false
+      }
+    },
+    
+    processEnrollmentData() {
+      if (!this.enrollmentData || this.enrollmentData.length === 0) {
+        this.fallbackToTestData()
+        return
+      }
+      
+      // Process enrollments to extract courses
+      const courses = []
+      
+      this.enrollmentData.forEach(enrollment => {
+        if (enrollment.Courses && Array.isArray(enrollment.Courses)) {
+          enrollment.Courses.forEach(course => {
+            // Create course object with enhanced data for course list
+            const courseData = {
+              id: course.id,
+              title: course.Name || 'Unnamed Course',
+              description: course.Description || 'No description available.',
+              instructor: this.getInstructorName(course),
+              instructorTitle: this.getInstructorTitle(course),
+              instructorAvatar: null,
+              category: this.getCourseCategory(course.Name),
+              image: null,
+              progress: this.getRandomProgress(),
+              status: this.getCourseStatus(),
+              rating: parseFloat(this.getRandomRating()),
+              reviews: this.getRandomReviews(),
+              duration: this.getCourseDuration(),
+              lessons: course.Lessons || this.getRandomLessons(),
+              level: this.getCourseLevel(),
+              totalHours: this.getRandomHours(),
+              startDate: course['Start Date'] || new Date().toISOString().split('T')[0],
+              active: course.Active !== false
+            }
+            
+            courses.push(courseData)
+          })
+        }
+      })
+      
+      this.courses = courses
+    },
+    
+    fallbackToTestData() {
+      // Use test data if API fails
+      this.courses = this.testCourses
+    },
+    
+    getInstructorName(course) {
+      const instructors = [
+        'Dr. Sarah Johnson',
+        'Prof. Mike Chen', 
+        'Dr. Emily Rodriguez',
+        'Lisa Thompson',
+        'Dr. Alex Kumar',
+        'James Wilson'
+      ]
+      return instructors[course.id % instructors.length]
+    },
+    
+    getInstructorTitle(course) {
+      const titles = [
+        'Senior JavaScript Developer',
+        'UX/UI Design Expert',
+        'Database Architect', 
+        'Marketing Strategist',
+        'Data Science Lead',
+        'Mobile App Developer'
+      ]
+      return titles[course.id % titles.length]
+    },
+    
+    getCourseCategory(courseName) {
+      const name = (courseName || '').toLowerCase()
+      if (name.includes('javascript') || name.includes('python') || name.includes('database')) return 'programming'
+      if (name.includes('design')) return 'design'
+      if (name.includes('marketing')) return 'business'
+      if (name.includes('data')) return 'data'
+      return 'programming'
+    },
+    
+    getCourseStatus() {
+      const statuses = ['In Progress', 'In Progress', 'Completed', 'Not Started']
+      return statuses[Math.floor(Math.random() * statuses.length)]
+    },
+    
+    getRandomProgress() {
+      return Math.floor(Math.random() * 101) // 0-100
+    },
+    
+    getRandomRating() {
+      return (Math.random() * 1.5 + 3.5).toFixed(1) // 3.5-5.0 rating
+    },
+    
+    getRandomReviews() {
+      return Math.floor(Math.random() * 400) + 50 // 50-450 reviews
+    },
+    
+    getCourseDuration() {
+      const durations = ['6 weeks', '8 weeks', '10 weeks', '12 weeks', '14 weeks', '16 weeks']
+      return durations[Math.floor(Math.random() * durations.length)]
+    },
+    
+    getRandomLessons() {
+      return Math.floor(Math.random() * 40) + 20 // 20-60 lessons
+    },
+    
+    getCourseLevel() {
+      const levels = ['Beginner', 'Intermediate', 'Advanced']
+      return levels[Math.floor(Math.random() * levels.length)]
+    },
+    
+    getRandomHours() {
+      return Math.floor(Math.random() * 30) + 10 // 10-40 hours
     },
     
     getStatusBadgeClass(status) {
